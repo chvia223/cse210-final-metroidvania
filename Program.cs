@@ -13,11 +13,22 @@ namespace cse210_final_metroidvania
             // The Cast
             Dictionary<string, List<Actor>> cast = new Dictionary<string, List<Actor>>();
 
-            // The Bricks
-            cast["bricks"] = new List<Actor>();
+            // The Floor
+            cast["floor"] = new List<Actor>();
 
-            // The Ball
-            cast["balls"] = new List<Actor>();
+            int y = 500;
+            for (int x = 0; x < 800; x+=50)
+            {
+                Floor floor = new Floor();
+                floor.SetPosition(new Point(x, y));
+                cast["floor"].Add(floor);
+            }
+
+            // The Heros
+            cast["heros"] = new List<Actor>();
+
+            Hero hero = new Hero();
+            cast["heros"].Add(hero);
 
             // Ball ball = new Ball();
             // cast["balls"].Add(ball);
@@ -56,9 +67,11 @@ namespace cse210_final_metroidvania
             script["update"].Add(handleCollisionsAction);
 
             // Start up the game
-            outputService.OpenWindow(Constants.MAX_X, Constants.MAX_Y, "Batter", Constants.FRAME_RATE);
+            outputService.OpenWindow(Constants.MAX_X, Constants.MAX_Y, "Metroidvania", Constants.FRAME_RATE);
             audioService.StartAudio();
             audioService.PlaySound(Constants.SOUND_START);
+
+            // Raylib.BeginMode2D(Camera2D camera); 
 
             Director theDirector = new Director(cast, script);
             theDirector.Direct();
