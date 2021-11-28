@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using cse210_final_metroidvania.Casting;
 using cse210_final_metroidvania.Services;
+using System;
 
 
 namespace cse210_final_metroidvania
@@ -20,76 +21,80 @@ namespace cse210_final_metroidvania
 
         public override void Execute(Dictionary<string, List<Actor>> cast)
         {
-            List<Actor> balls = cast["balls"];
+            List<Actor> heros = cast["heros"];
+            // Actor hero = cast["heros"][0];
             // Actor paddle = cast["paddle"][0];
 
-            List<Actor> bricks = cast["bricks"];
+            List<Actor> floor = cast["floor"];
 
+ 
+            foreach (Hero hero in heros)
+            {
+                Point heroVelocity = hero.GetVelocity();
 
-        }    
-        //     foreach (Ball ball in balls)
-        //     {
-        //         foreach (Actor brick in bricks)
-        //         {
-        //             if (_physicsService.IsCollision(ball, brick))
-        //             {
-        //                 if (_physicsService.IsActorVerticalCollision(ball, brick))
-        //                 {
-        //                     ball.VerticalBounce();
-        //                     _bricksToRemove.Add(brick);
-        //                     _audioService.PlaySound(Constants.SOUND_BOUNCE);
-                            
-        //                     break;
-        //                 }
-        //                 if (_physicsService.IsHorizontalCollision(ball, brick))
-        //                 {    
-        //                     ball.HorizontalBounce();
-        //                     _bricksToRemove.Add(brick);
-        //                     _audioService.PlaySound(Constants.SOUND_BOUNCE);
+                foreach (Actor floor_piece in floor)
+                {
+                    if (_physicsService.IsCollision(hero, floor_piece))
+                    {
+                        if (_physicsService.IsActorVerticalCollision(hero, floor_piece))
+                        {
+                            Console.WriteLine("Vertical Bump");
+                            hero.SetVelocity(new Point(heroVelocity.GetX(), 0));
+                            break;
+                        }
+                        if (_physicsService.IsHorizontalCollision(hero, floor_piece))
+                        {    
+                            Console.WriteLine("Horizontal Bump");
+                            hero.SetVelocity(new Point(0, heroVelocity.GetY()));
+                            // _audioService.PlaySound(Constants.SOUND_BOUNCE);
 
-        //                     break;
-        //                 }
+                            break;
+                        }
   
-        //             }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Falling");
+                        hero.SetVelocity(new Point(heroVelocity.GetX(), Constants.GRAVITY));
+                    }
                     
-        //         }
+                }
 
-            
-        //         if (_physicsService.IsHorizontalWallCollision(ball))
-        //         {    
-        //             ball.HorizontalBounce();
-        //             _audioService.PlaySound(Constants.SOUND_BOUNCE);
-        //         }
+                // if (_physicsService.IsHorizontalWallCollision(ball))
+                // {    
+                //     ball.HorizontalBounce();
+                //     _audioService.PlaySound(Constants.SOUND_BOUNCE);
+                // }
 
-        //         if (_physicsService.IsTopWallCollision(ball))
-        //         {
-        //             ball.VerticalBounce();
-        //             _audioService.PlaySound(Constants.SOUND_BOUNCE);
-        //         }
+                // if (_physicsService.IsTopWallCollision(ball))
+                // {
+                //     ball.VerticalBounce();
+                //     _audioService.PlaySound(Constants.SOUND_BOUNCE);
+                // }
 
-        //         if (_physicsService.IsBottomWallCollision(ball))
-        //         {
-        //             _ballsToRemove.Add(ball);
-        //         }
+                // if (_physicsService.IsBottomWallCollision(ball))
+                // {
+                //     _ballsToRemove.Add(ball);
+                // }
                 
-        //         if (_physicsService.IsCollision(ball, paddle))
-        //         {
-        //             if (_physicsService.IsActorVerticalCollision(ball, paddle))
-        //             {
-        //                 ball.VerticalBounce();
-        //                 _audioService.PlaySound(Constants.SOUND_BOUNCE);
-        //             }
-        //             else if (_physicsService.IsHorizontalCollision(ball, paddle))
-        //             {    
-        //                 ball.HorizontalBounce();
-        //                 _audioService.PlaySound(Constants.SOUND_BOUNCE);
-        //             }
+                // if (_physicsService.IsCollision(ball, paddle))
+                // {
+                //     if (_physicsService.IsActorVerticalCollision(ball, paddle))
+                //     {
+                //         ball.VerticalBounce();
+                //         _audioService.PlaySound(Constants.SOUND_BOUNCE);
+                //     }
+                //     else if (_physicsService.IsHorizontalCollision(ball, paddle))
+                //     {    
+                //         ball.HorizontalBounce();
+                //         _audioService.PlaySound(Constants.SOUND_BOUNCE);
+                //     }
                     
-        //         }
-        //     }
+                
+            }
 
-        //     ActorsCleanUp(cast);
-        // }
+            ActorsCleanUp(cast);
+        }
 
         private void ActorsCleanUp(Dictionary<string, List<Actor>> cast)
         {
