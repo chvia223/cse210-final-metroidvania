@@ -20,39 +20,51 @@ namespace cse210_final_metroidvania.Scripting
         public override void Execute(Dictionary<string, List<Actor>> cast)
         {
             Point direction = _inputService.GetDirection();
-            Point velocity = new Point(0,0);
-            // Actor paddle = cast["paddle"][0];
+            Actor hero = cast["heros"][0];
+            Point velocity = hero.GetVelocity();
 
-            
-            // This logic makes sure the paddle can't move off screen
-            // if (paddle.GetRightEdge() > Constants.MAX_X)
+
+            if (direction.GetX() == 1)
+            {
+                hero.SetVelocity(new Point(Constants.PADDLE_SPEED, velocity.GetY()));
+            }
+            else if (direction.GetX() == -1)
+            {
+                hero.SetVelocity(new Point(-Constants.PADDLE_SPEED, velocity.GetY()));
+            }
+            else
+            {
+                hero.SetVelocity(new Point(0, velocity.GetY()));
+            }
+            // if (hero.GetRightEdge() > Constants.MAX_X)
             // {
             //     if (direction.GetX() == 1)
             //     {
-            //         velocity.Scale(0);
+            //         velocity.SetX(0);
             //     }
             //     else
             //     {
-            //         velocity = direction.Scale(Constants.PADDLE_SPEED);
+            //         velocity.SetX(Constants.PADDLE_SPEED);
             //     }
             // }
-            // else if (paddle.GetLeftEdge() < 0)
+            // else if (hero.GetLeftEdge() < 0)
             // {
             //     if (direction.GetX() == -1)
             //     {
-            //         velocity.Scale(0);
+            //         velocity.SetX(0);
             //     }
             //     else
             //     {
-            //         velocity = direction.Scale(Constants.PADDLE_SPEED);
+            //         velocity.SetX(-Constants.PADDLE_SPEED);
             //     }    
             // }
             // else
             // {
-            //     velocity = direction.Scale(Constants.PADDLE_SPEED);
+            //     velocity.SetX(Constants.PADDLE_SPEED);
             // }
  
-            // paddle.SetVelocity(velocity);
+            
+            // 
         }
         
     }
