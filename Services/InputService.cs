@@ -24,6 +24,11 @@ namespace cse210_final_metroidvania.Services
             return Raylib.IsKeyDown(Raylib_cs.KeyboardKey.KEY_RIGHT);
         }
 
+        public bool IsSpacePressed()
+        {
+            return Raylib.IsKeyDown(Raylib_cs.KeyboardKey.KEY_SPACE);
+        }
+
         /// <summary>
         /// Gets the direction asked for by the current key presses
         /// </summary>
@@ -41,6 +46,11 @@ namespace cse210_final_metroidvania.Services
             if (IsRightPressed())
             {
                 x = 1;
+            }
+
+            if (IsSpacePressed())
+            {
+                y = 1;
             }
             
             return new Point(x, y);
