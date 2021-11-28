@@ -28,6 +28,16 @@ namespace cse210_final_metroidvania.Casting
             return _y;
         }
 
+        public void SetX(int x)
+        {
+            _x = x;
+        }
+
+        public void SetY(int y)
+        {
+            _y = y;
+        }
+
         /// <summary>
         /// Returns a new point that is the result of adding this one to the provided one.
         /// </summary>
