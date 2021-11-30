@@ -11,30 +11,47 @@ namespace cse210_final_metroidvania.Scripting
     public class ControlActorsAction : Action
     {
         private InputService _inputService;
+        private PhysicsService _physicsService;
 
-        public ControlActorsAction(InputService inputService)
+        public ControlActorsAction(InputService inputService, PhysicsService physicsService)
         {
             _inputService = inputService;
+            _physicsService = physicsService;
         }
 
         public override void Execute(Dictionary<string, List<Actor>> cast)
         {
             Point direction = _inputService.GetDirection();
-            Actor hero = cast["heros"][0];
-            Point velocity = hero.GetVelocity();
+            List<Actor> heros = cast["heros"];
+            
 
 
-            if (direction.GetX() == 1)
+            foreach (Hero hero in heros)
             {
-                hero.SetVelocity(new Point(Constants.PADDLE_SPEED, velocity.GetY()));
-            }
-            else if (direction.GetX() == -1)
-            {
-                hero.SetVelocity(new Point(-Constants.PADDLE_SPEED, velocity.GetY()));
-            }
-            else
-            {
-                hero.SetVelocity(new Point(0, velocity.GetY()));
+                Point velocity = hero.GetVelocity();
+
+                if (direction.GetX() == 1)
+                {
+                    hero.SetVelocity(new Point(5, velocity.GetY()));
+                    // _physicsService.ChangeAcceleration(hero, 1, "x");
+                }
+                else if (direction.GetX() == -1)
+                {
+                    // hero.SetVelocity(new Point(0, velocity.GetY()));
+                    hero.SetVelocity(new Point(-5, velocity.GetY()));
+                    // _physicsService.ChangeAcceleration(hero, -1, "x");
+                }
+                else
+                {
+                    hero.SetVelocity(new Point(0, velocity.GetY()));
+                    // _physicsService.ChangeAcceleration(hero, 0, "x");
+                }
+
+                if (direction.GetY()  == 1)
+                {
+                    _physicsService.ChangeAcceleration(hero, -2, "y");
+                    // hero.SetGravity(true);
+                }
             }
             // if (hero.GetRightEdge() > Constants.MAX_X)
             // {
