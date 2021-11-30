@@ -9,7 +9,7 @@ namespace cse210_final_metroidvania
     {
         public const int MAX_X = 1200;
         public const int MAX_Y = 800;
-        public const int FRAME_RATE = 30;
+        public const int FRAME_RATE = 60;
 
         public const int DEFAULT_SQUARE_SIZE = 20;
         public const int DEFAULT_FONT_SIZE = 20;
@@ -23,28 +23,15 @@ namespace cse210_final_metroidvania
         public const string SOUND_BOUNCE = "./Assets/boing.wav";
         public const string SOUND_OVER = "./Assets/over.wav";
 
-        public const int BALL_X = MAX_X / 2;
-        public const int BALL_Y = MAX_Y - 125;
-
-        public const int BALL_DX = 8;
-        public const int BALL_DY = BALL_DX * -1;
-
-        public const int PADDLE_X = MAX_X / 2;
-        public const int PADDLE_Y = MAX_Y - 25;
-
         public const int FLOOR_WIDTH = 50;
         public const int FLOOR_HEIGHT = 50;
 
-        public const int PADDLE_SPEED = 15;
-
-        public const int PADDLE_WIDTH = 96;
-        public const int PADDLE_HEIGHT = 24;
-
         public const int HERO_WIDTH = 24;
         public const int HERO_HEIGHT = 24;
+        public const double HERO_JUMP_ACCELERATION = -8.0;
 
-        public const int GRAVITY = 1;
-        public const int TERMINAL_VELOCITY = 22;
+        public const double GRAVITY = .5;
+        public const int TERMINAL_VELOCITY = 25;
     }
 
 }
