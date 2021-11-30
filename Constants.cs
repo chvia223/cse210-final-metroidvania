@@ -29,9 +29,10 @@ namespace cse210_final_metroidvania
         public const int HERO_WIDTH = 24;
         public const int HERO_HEIGHT = 24;
         public const double HERO_JUMP_ACCELERATION = -8.0;
+        public const double HERO_SPEED = 5.0;
 
         public const double GRAVITY = .5;
-        public const int TERMINAL_VELOCITY = 25;
+        public const double TERMINAL_VELOCITY = 25;
     }
 
 }
