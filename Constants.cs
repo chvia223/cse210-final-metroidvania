@@ -7,8 +7,8 @@ namespace cse210_final_metroidvania
     /// </summary>
     public static class Constants
     {
-        public const int MAX_X = 800;
-        public const int MAX_Y = 600;
+        public const int MAX_X = 1200;
+        public const int MAX_Y = 800;
         public const int FRAME_RATE = 30;
 
         public const int DEFAULT_SQUARE_SIZE = 20;
@@ -43,7 +43,8 @@ namespace cse210_final_metroidvania
         public const int HERO_WIDTH = 24;
         public const int HERO_HEIGHT = 24;
 
-        public const int GRAVITY = 10;
+        public const int GRAVITY = 1;
+        public const int TERMINAL_VELOCITY = 22;
     }
 
 }
