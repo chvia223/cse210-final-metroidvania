@@ -22,75 +22,42 @@ namespace cse210_final_metroidvania
         public override void Execute(Dictionary<string, List<Actor>> cast)
         {
             List<Actor> heros = cast["heros"];
-            // Actor hero = cast["heros"][0];
-            // Actor paddle = cast["paddle"][0];
-
             List<Actor> floor = cast["floor"];
 
  
             foreach (Hero hero in heros)
             {
-                Point heroVelocity = hero.GetVelocity();
-
                 foreach (Actor floor_piece in floor)
                 {
+                    // _physicsService.HeroBottomToTopCollision(hero, floor_piece);
+                    // _physicsService.HeroRightToLeftCollision(hero, floor_piece);
+
                     if (_physicsService.IsCollision(hero, floor_piece))
                     {
-                        if (_physicsService.IsActorVerticalCollision(hero, floor_piece))
+                        if (_physicsService.IsBottomCollision(hero, floor_piece))
                         {
-                            Console.WriteLine("Vertical Bump");
-                            hero.SetVelocity(new Point(heroVelocity.GetX(), 0));
-                            break;
+                            _physicsService.HeroBottomToTopCollision(hero, floor_piece);
                         }
-                        if (_physicsService.IsHorizontalCollision(hero, floor_piece))
-                        {    
-                            Console.WriteLine("Horizontal Bump");
-                            hero.SetVelocity(new Point(0, heroVelocity.GetY()));
-                            // _audioService.PlaySound(Constants.SOUND_BOUNCE);
-
-                            break;
+                        else if (_physicsService.IsTopCollision(hero, floor_piece))
+                        {
+                            _physicsService.HeroTopToBottomCollision(hero, floor_piece);
                         }
-  
+                        else if (_physicsService.IsRightCollision(hero, floor_piece))
+                        {
+                            _physicsService.HeroRightToLeftCollision(hero, floor_piece);
+                        }
+                        else if (_physicsService.IsLeftCollision(hero, floor_piece))
+                        {
+                            _physicsService.HeroLeftToRightCollision(hero, floor_piece);
+                        }
+                        
+                        
                     }
                     else
                     {
-                        Console.WriteLine("Falling");
-                        hero.SetVelocity(new Point(heroVelocity.GetX(), Constants.GRAVITY));
+                        // hero.SetGravity(true);
                     }
-                    
                 }
-
-                // if (_physicsService.IsHorizontalWallCollision(ball))
-                // {    
-                //     ball.HorizontalBounce();
-                //     _audioService.PlaySound(Constants.SOUND_BOUNCE);
-                // }
-
-                // if (_physicsService.IsTopWallCollision(ball))
-                // {
-                //     ball.VerticalBounce();
-                //     _audioService.PlaySound(Constants.SOUND_BOUNCE);
-                // }
-
-                // if (_physicsService.IsBottomWallCollision(ball))
-                // {
-                //     _ballsToRemove.Add(ball);
-                // }
-                
-                // if (_physicsService.IsCollision(ball, paddle))
-                // {
-                //     if (_physicsService.IsActorVerticalCollision(ball, paddle))
-                //     {
-                //         ball.VerticalBounce();
-                //         _audioService.PlaySound(Constants.SOUND_BOUNCE);
-                //     }
-                //     else if (_physicsService.IsHorizontalCollision(ball, paddle))
-                //     {    
-                //         ball.HorizontalBounce();
-                //         _audioService.PlaySound(Constants.SOUND_BOUNCE);
-                //     }
-                    
-                
             }
 
             ActorsCleanUp(cast);
