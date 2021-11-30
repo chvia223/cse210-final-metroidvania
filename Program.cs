@@ -17,12 +17,18 @@ namespace cse210_final_metroidvania
             cast["floor"] = new List<Actor>();
 
             int y = 500;
-            for (int x = 0; x < 800; x+=50)
+            for (int x = 0; x < 700; x+=50)
             {
                 Floor floor = new Floor();
                 floor.SetPosition(new Point(x, y));
                 cast["floor"].Add(floor);
             }
+            
+            // For Collision debug
+            Floor barrier = new Floor();
+            barrier.SetPosition(new Point(350, 450));
+            cast["floor"].Add(barrier);
+            //
 
             // The Heros
             cast["heros"] = new List<Actor>();
@@ -57,7 +63,7 @@ namespace cse210_final_metroidvania
             DrawActorsAction drawActorsAction = new DrawActorsAction(outputService);
             script["output"].Add(drawActorsAction);
 
-            ControlActorsAction controlActorsAction = new ControlActorsAction(inputService);
+            ControlActorsAction controlActorsAction = new ControlActorsAction(inputService, physicsService);
             script["input"].Add(controlActorsAction);
 
             MoveActorsAction moveActorsAction = new MoveActorsAction();
@@ -65,6 +71,9 @@ namespace cse210_final_metroidvania
 
             HandleCollisionsAction handleCollisionsAction = new HandleCollisionsAction(physicsService, audioService);
             script["update"].Add(handleCollisionsAction);
+
+            GravityAction gravityAction = new GravityAction(physicsService);
+            script["update"].Add(gravityAction);
 
             // Start up the game
             outputService.OpenWindow(Constants.MAX_X, Constants.MAX_Y, "Metroidvania", Constants.FRAME_RATE);
