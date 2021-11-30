@@ -9,6 +9,7 @@ namespace cse210_final_metroidvania.Casting
     {
         protected Point _position;
         protected Point _velocity;
+        protected bool _hasGravity;
 
         protected int _width = 0;
         protected int _height = 0;
@@ -42,6 +43,16 @@ namespace cse210_final_metroidvania.Casting
         public bool HasText()
         {
             return _text != "";
+        }
+
+        public bool HasGravity()
+        {
+            return _hasGravity;
+        }
+
+        public void SetGravity(bool hasGravity)
+        {
+            _hasGravity = hasGravity;
         }
 
         public bool HasBox()

@@ -13,7 +13,8 @@ namespace cse210_final_metroidvania.Casting
             SetWidth(Constants.HERO_WIDTH);
             SetImage(Constants.IMAGE_HERO);
             SetPosition(new Point(100, 100));
-            SetVelocity(new Point(0, Constants.GRAVITY));
+            SetVelocity(new Point(0, 0));
+            SetGravity(true);
         }
 
     }

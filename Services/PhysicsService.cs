@@ -39,47 +39,96 @@ namespace cse210_final_metroidvania.Services
             Raylib_cs.Rectangle rectangle2
                 = new Raylib_cs.Rectangle(x2, y2, width2, height2);
 
+            
+
             return Raylib.CheckCollisionRecs(rectangle1, rectangle2);
         }
 
-        public bool IsHorizontalWallCollision(Actor actor)
+        // public bool IsHorizontalWallCollision(Actor actor)
+        // {
+        //     return (actor.GetRightEdge() >= Constants.MAX_X || actor.GetLeftEdge() <= 0);
+        // }
+
+        // public bool IsTopWallCollision(Actor actor)
+        // {
+        //     return actor.GetTopEdge() <= 0;
+        // }
+
+        // public bool IsBottomWallCollision(Actor actor)
+        // {
+        //     return actor.GetBottomEdge() >= Constants.MAX_Y;
+        // }
+
+        public bool IsBottomCollision(Hero hero, Actor actor)
         {
-            return (actor.GetRightEdge() >= Constants.MAX_X || actor.GetLeftEdge() <= 0);
+            return (hero.GetBottomEdge() + hero.GetVelocity().GetY() >= actor.GetTopEdge() && hero.GetBottomEdge() <= actor.GetTopEdge() + (actor.GetHeight()/2));
         }
 
-        public bool IsTopWallCollision(Actor actor)
+
+        public void HeroBottomToTopCollision(Hero hero, Actor actor)
         {
-            return actor.GetTopEdge() <= 0;
+            Console.WriteLine("Hero fell On Something");
+            hero.SetVelocity(new Point(hero.GetVelocity().GetX(), 0));
+            hero.SetPosition(new Point(hero.GetPosition().GetX(), actor.GetTopEdge() - hero.GetHeight()));
         }
 
-        public bool IsBottomWallCollision(Actor actor)
+        public bool IsTopCollision(Hero hero, Actor actor)
         {
-            return actor.GetBottomEdge() >= Constants.MAX_Y;
+            return (hero.GetTopEdge() - 3 <= actor.GetBottomEdge() && hero.GetTopEdge() >= actor.GetBottomEdge() - (actor.GetHeight()/3));
         }
 
-        public bool IsHorizontalCollision(Actor actor1, Actor actor2)
+        public void HeroTopToBottomCollision(Hero hero, Actor actor)
         {
-            if (actor1.GetLeftEdge() <= (actor2.GetRightEdge()) || 
-                actor1.GetRightEdge() >= (actor2.GetLeftEdge()))
+            Console.WriteLine("Hero bonk their head on something");
+            hero.SetVelocity(new Point(hero.GetVelocity().GetX(), 0));
+            hero.SetPosition(new Point(hero.GetPosition().GetX(), actor.GetBottomEdge()));
+        }
+
+        public bool IsRightCollision(Hero hero, Actor actor)
+        {
+            return ((hero.GetRightEdge() + 3 >= actor.GetLeftEdge() && hero.GetRightEdge() <= actor.GetLeftEdge() + (actor.GetWidth()/3)));
+        }
+
+        public void HeroRightToLeftCollision(Hero hero, Actor actor)
+        {
+            Console.WriteLine("Hero bonked on their right");
+            hero.SetVelocity(new Point(0, hero.GetVelocity().GetY()));
+            hero.SetPosition(new Point(actor.GetLeftEdge() - hero.GetWidth(), hero.GetPosition().GetY()));
+        }
+
+        public bool IsLeftCollision(Hero hero, Actor actor)
+        {
+            return ((hero.GetLeftEdge() - 3 <= actor.GetRightEdge() && hero.GetLeftEdge() >= actor.GetRightEdge() - (actor.GetWidth()/3)));
+        }
+
+        public void HeroLeftToRightCollision(Hero hero, Actor actor)
+        {
+                Console.WriteLine("Hero bonked on their left");
+                hero.SetVelocity(new Point(0, hero.GetVelocity().GetY()));
+                hero.SetPosition(new Point(actor.GetRightEdge() + 1, hero.GetPosition().GetY()));
+        }
+
+        public void ChangeAcceleration(Actor actor, int dv, string axis)
+        {
+            Point velocity = actor.GetVelocity();
+            int dx = velocity.GetX();
+            int dy = velocity.GetY();
+
+            if (axis == "x")
             {
-                return true;
+                dx = dx + dv;
+                actor.SetVelocity(new Point(dx, dy));
             }
-            else
+            else if (axis == "y")
             {
-                return false;
+                dy = dy + dv;
+                actor.SetVelocity(new Point(dx, dy));
             }
-        }
-
-        public bool IsActorVerticalCollision(Actor actor1, Actor actor2)
-        {
-            if (actor1.GetTopEdge() <= (actor2.GetBottomEdge())  || 
-                actor1.GetBottomEdge() >= (actor2.GetTopEdge()))
+            else if (axis == "xy")
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                dx = dx + dv;
+                dy = dy + dv;
+                actor.SetVelocity(new Point(dx, dy));
             }
         }
     }

@@ -12,6 +12,7 @@ namespace cse210_final_metroidvania.Casting
             SetHeight(Constants.FLOOR_HEIGHT);
             SetWidth(Constants.FLOOR_WIDTH);
             SetImage(Constants.IMAGE_FLOOR);
+            SetGravity(false);
         }
 
     }
