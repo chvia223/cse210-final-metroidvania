@@ -23,16 +23,16 @@ namespace cse210_final_metroidvania.Services
         /// <returns></returns>
         public bool IsCollision(Actor first, Actor second)
         {
-            int x1 = first.GetX();
-            int y1 = first.GetY();
+            int x1 = (int)Math.Ceiling(first.GetX());
+            int y1 = (int)Math.Ceiling(first.GetY());
             int width1 = first.GetWidth();
             int height1 = first.GetHeight();
 
             Raylib_cs.Rectangle rectangle1
                 = new Raylib_cs.Rectangle(x1, y1, width1, height1);
 
-            int x2 = second.GetX();
-            int y2 = second.GetY();
+            int x2 = (int)Math.Ceiling(second.GetX());
+            int y2 = (int)Math.Ceiling(second.GetY());
             int width2 = second.GetWidth();
             int height2 = second.GetHeight();
 
@@ -59,60 +59,48 @@ namespace cse210_final_metroidvania.Services
         //     return actor.GetBottomEdge() >= Constants.MAX_Y;
         // }
 
-        public bool IsBottomCollision(Hero hero, Actor actor)
+
+        /// <summary>
+        /// Collision with the top of the second actor.
+        /// </summary>
+        public void HandleTopCollision(Actor first, Actor second)
         {
-            return (hero.GetBottomEdge() + hero.GetVelocity().GetY() >= actor.GetTopEdge() && hero.GetBottomEdge() <= actor.GetTopEdge() + (actor.GetHeight()/2));
+            first.SetVelocity(new Point(first.GetVelocity().GetX(), 0));
+            first.SetPosition(new Point(first.GetPosition().GetX(), second.GetTopEdge() - first.GetHeight()));
         }
 
-
-        public void HeroBottomToTopCollision(Hero hero, Actor actor)
+        /// <summary>
+        /// Collision with the bottom of the second actor.
+        /// </summary>
+        public void HandleBottomCollision(Actor first, Actor second)
         {
-            Console.WriteLine("Hero fell On Something");
-            hero.SetVelocity(new Point(hero.GetVelocity().GetX(), 0));
-            hero.SetPosition(new Point(hero.GetPosition().GetX(), actor.GetTopEdge() - hero.GetHeight()));
+            first.SetVelocity(new Point(first.GetVelocity().GetX(), 0));
+            first.SetPosition(new Point(first.GetPosition().GetX(), second.GetBottomEdge()));
         }
 
-        public bool IsTopCollision(Hero hero, Actor actor)
+        /// <summary>
+        /// Collision with the left of the second actor
+        /// </summary>
+        public void HandleLeftCollision(Actor first, Actor second)
         {
-            return (hero.GetTopEdge() - 3 <= actor.GetBottomEdge() && hero.GetTopEdge() >= actor.GetBottomEdge() - (actor.GetHeight()/3));
+            first.SetVelocity(new Point(0, first.GetVelocity().GetY()));
+            first.SetPosition(new Point(second.GetLeftEdge() - first.GetWidth(), first.GetPosition().GetY()));
         }
 
-        public void HeroTopToBottomCollision(Hero hero, Actor actor)
+        /// <summary>
+        /// Collision with the right of the second actor
+        /// </summary>
+        public void HandleRightCollision(Actor first, Actor second)
         {
-            Console.WriteLine("Hero bonk their head on something");
-            hero.SetVelocity(new Point(hero.GetVelocity().GetX(), 0));
-            hero.SetPosition(new Point(hero.GetPosition().GetX(), actor.GetBottomEdge()));
+                first.SetVelocity(new Point(0, first.GetVelocity().GetY()));
+                first.SetPosition(new Point(second.GetRightEdge(), first.GetPosition().GetY()));
         }
 
-        public bool IsRightCollision(Hero hero, Actor actor)
-        {
-            return ((hero.GetRightEdge() + 3 >= actor.GetLeftEdge() && hero.GetRightEdge() <= actor.GetLeftEdge() + (actor.GetWidth()/3)));
-        }
-
-        public void HeroRightToLeftCollision(Hero hero, Actor actor)
-        {
-            Console.WriteLine("Hero bonked on their right");
-            hero.SetVelocity(new Point(0, hero.GetVelocity().GetY()));
-            hero.SetPosition(new Point(actor.GetLeftEdge() - hero.GetWidth(), hero.GetPosition().GetY()));
-        }
-
-        public bool IsLeftCollision(Hero hero, Actor actor)
-        {
-            return ((hero.GetLeftEdge() - 3 <= actor.GetRightEdge() && hero.GetLeftEdge() >= actor.GetRightEdge() - (actor.GetWidth()/3)));
-        }
-
-        public void HeroLeftToRightCollision(Hero hero, Actor actor)
-        {
-                Console.WriteLine("Hero bonked on their left");
-                hero.SetVelocity(new Point(0, hero.GetVelocity().GetY()));
-                hero.SetPosition(new Point(actor.GetRightEdge() + 1, hero.GetPosition().GetY()));
-        }
-
-        public void ChangeAcceleration(Actor actor, int dv, string axis)
+        public void ChangeAcceleration(Actor actor, double dv, string axis)
         {
             Point velocity = actor.GetVelocity();
-            int dx = velocity.GetX();
-            int dy = velocity.GetY();
+            double dx = velocity.GetX();
+            double dy = velocity.GetY();
 
             if (axis == "x")
             {
@@ -130,6 +118,41 @@ namespace cse210_final_metroidvania.Services
                 dy = dy + dv;
                 actor.SetVelocity(new Point(dx, dy));
             }
+        }
+
+
+        public Point GetCollisionOverlap(Actor first, Actor second)
+        {
+            double firstHalfWidth = first.GetWidth() / 2;
+            double firstHalfHeight = first.GetHeight() / 2;
+            double secondHalfWidth = second.GetWidth() / 2;
+            double secondHalfHeight = second.GetHeight() / 2;
+
+            double firstCenterX = first.GetPosition().GetX() + firstHalfWidth;
+            double firstCenterY = first.GetPosition().GetY() + firstHalfHeight;
+            double secondCenterX = second.GetPosition().GetX() + secondHalfWidth;
+            double secondCenterY = second.GetPosition().GetY() + secondHalfHeight;
+
+            double diffX = firstCenterX - secondCenterX;
+            double diffY = firstCenterY - secondCenterY;
+
+            double distanceToOverlapX = firstHalfWidth + secondHalfWidth;
+            double distanceToOverlapY = firstHalfHeight + secondHalfHeight;
+
+            double depthX = Math.Abs(distanceToOverlapX) - Math.Abs(diffX);
+            double depthY = Math.Abs(distanceToOverlapY) - Math.Abs(diffY);
+
+            if (diffX > 0)
+            {
+                depthX *= -1;
+            }
+
+            if (diffY > 0)
+            {
+                depthY *= -1;
+            }
+
+            return new Point(depthX, depthY);
         }
     }
 

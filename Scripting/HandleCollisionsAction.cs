@@ -29,38 +29,57 @@ namespace cse210_final_metroidvania
             {
                 foreach (Actor floor_piece in floor)
                 {
-                    // _physicsService.HeroBottomToTopCollision(hero, floor_piece);
-                    // _physicsService.HeroRightToLeftCollision(hero, floor_piece);
-
-                    if (_physicsService.IsCollision(hero, floor_piece))
-                    {
-                        if (_physicsService.IsBottomCollision(hero, floor_piece))
-                        {
-                            _physicsService.HeroBottomToTopCollision(hero, floor_piece);
-                        }
-                        else if (_physicsService.IsTopCollision(hero, floor_piece))
-                        {
-                            _physicsService.HeroTopToBottomCollision(hero, floor_piece);
-                        }
-                        else if (_physicsService.IsRightCollision(hero, floor_piece))
-                        {
-                            _physicsService.HeroRightToLeftCollision(hero, floor_piece);
-                        }
-                        else if (_physicsService.IsLeftCollision(hero, floor_piece))
-                        {
-                            _physicsService.HeroLeftToRightCollision(hero, floor_piece);
-                        }
-                        
-                        
-                    }
-                    else
-                    {
-                        // hero.SetGravity(true);
-                    }
+                    HandleCollision(hero, floor_piece);
                 }
             }
 
             ActorsCleanUp(cast);
+        }
+
+        private void HandleCollision(Actor first, Actor second)
+        {
+            if (_physicsService.IsCollision(first, second))
+            {
+                Point overlap = _physicsService.GetCollisionOverlap(first, second);
+
+                if (overlap.GetX() != 0 && overlap.GetY() != 0)
+                {
+                    if (Math.Abs(overlap.GetX()) < Math.Abs(overlap.GetY()))
+                    {
+                        if (overlap.GetX() > 0)
+                        {
+                            // Collision left of second actor
+                            Console.WriteLine("left side collision");
+                            _physicsService.HandleLeftCollision(first, second);
+                        }
+                        else
+                        {
+                            // Collision right of second actor
+                            Console.WriteLine("right side collision");
+                            _physicsService.HandleRightCollision(first, second);
+                        }
+                    }
+                    else
+                    {
+                        if (overlap.GetY() > 0)
+                        {
+                            // Collision top of second actor
+                            Console.WriteLine("top side collision");
+                            _physicsService.HandleTopCollision(first, second);
+                            if (first.GetType() == typeof(Hero))
+                            {
+                                first.SetCanJump(true);
+                            }
+                        }
+                        else
+                        {
+                            // Collision bottom of second actor
+                            Console.WriteLine("bottom side collision");
+                            _physicsService.HandleBottomCollision(first, second);
+                        }
+                    }
+                }
+            }
         }
 
         private void ActorsCleanUp(Dictionary<string, List<Actor>> cast)
