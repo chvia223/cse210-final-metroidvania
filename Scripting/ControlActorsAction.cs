@@ -24,65 +24,31 @@ namespace cse210_final_metroidvania.Scripting
             Point direction = _inputService.GetDirection();
             List<Actor> heros = cast["heros"];
             
-
-
+            
             foreach (Hero hero in heros)
             {
                 Point velocity = hero.GetVelocity();
 
                 if (direction.GetX() == 1)
                 {
-                    hero.SetVelocity(new Point(5, velocity.GetY()));
-                    // _physicsService.ChangeAcceleration(hero, 1, "x");
+                    hero.SetVelocity(new Point(Constants.HERO_SPEED, velocity.GetY()));
                 }
                 else if (direction.GetX() == -1)
                 {
-                    // hero.SetVelocity(new Point(0, velocity.GetY()));
-                    hero.SetVelocity(new Point(-5, velocity.GetY()));
-                    // _physicsService.ChangeAcceleration(hero, -1, "x");
+                    hero.SetVelocity(new Point(-Constants.HERO_SPEED, velocity.GetY()));
                 }
                 else
                 {
+                    // Do something with friction here
                     hero.SetVelocity(new Point(0, velocity.GetY()));
-                    // _physicsService.ChangeAcceleration(hero, 0, "x");
                 }
 
-                if (direction.GetY()  == 1)
+                if (direction.GetY() == 1 && hero.CanJump())
                 {
-                    _physicsService.ChangeAcceleration(hero, -2, "y");
-                    // hero.SetGravity(true);
+                    hero.SetCanJump(false);
+                    _physicsService.ChangeAcceleration(hero, Constants.HERO_JUMP_ACCELERATION, "y");
                 }
             }
-            // if (hero.GetRightEdge() > Constants.MAX_X)
-            // {
-            //     if (direction.GetX() == 1)
-            //     {
-            //         velocity.SetX(0);
-            //     }
-            //     else
-            //     {
-            //         velocity.SetX(Constants.PADDLE_SPEED);
-            //     }
-            // }
-            // else if (hero.GetLeftEdge() < 0)
-            // {
-            //     if (direction.GetX() == -1)
-            //     {
-            //         velocity.SetX(0);
-            //     }
-            //     else
-            //     {
-            //         velocity.SetX(-Constants.PADDLE_SPEED);
-            //     }    
-            // }
-            // else
-            // {
-            //     velocity.SetX(Constants.PADDLE_SPEED);
-            // }
- 
-            
-            // 
         }
-        
     }
 }
