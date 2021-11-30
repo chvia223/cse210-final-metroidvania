@@ -28,14 +28,14 @@ namespace cse210_final_metroidvania.Scripting
         
         private void MoveActor(Actor actor)
         {
-            int x = actor.GetX();
-            int y = actor.GetY();
+            double x = actor.GetX();
+            double y = actor.GetY();
 
-            int dx = actor.GetVelocity().GetX();
-            int dy = actor.GetVelocity().GetY();
+            double dx = actor.GetVelocity().GetX();
+            double dy = actor.GetVelocity().GetY();
 
-            int newX = (x + dx);
-            int newY = (y + dy);
+            double newX = (x + dx);
+            double newY = (y + dy);
 
             actor.SetPosition(new Point(newX, newY));
         }

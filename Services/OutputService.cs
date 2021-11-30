@@ -118,8 +118,8 @@ namespace cse210_final_metroidvania.Services
         /// <param name="actor"></param>
         public void DrawActor(Actor actor)
         {
-            int x = actor.GetX();
-            int y = actor.GetY();
+            int x = (int)Math.Ceiling(actor.GetX());
+            int y = (int)Math.Ceiling(actor.GetY());
             int width = actor.GetWidth();
             int height = actor.GetHeight();
 
