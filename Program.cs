@@ -17,7 +17,7 @@ namespace cse210_final_metroidvania
             cast["floor"] = new List<Actor>();
 
             int y = 500;
-            for (int x = 0; x < 700; x+=50)
+            for (int x = 0; x < 850; x+=50)
             {
                 Floor floor = new Floor();
                 floor.SetPosition(new Point(x, y));
@@ -28,6 +28,10 @@ namespace cse210_final_metroidvania
             Floor barrier = new Floor();
             barrier.SetPosition(new Point(350, 450));
             cast["floor"].Add(barrier);
+
+            Floor barrier2 = new Floor();
+            barrier2.SetPosition(new Point(750, 450));
+            cast["floor"].Add(barrier2);
             //
 
             // The Heros
@@ -36,14 +40,17 @@ namespace cse210_final_metroidvania
             Hero hero = new Hero();
             cast["heros"].Add(hero);
 
-            // Ball ball = new Ball();
-            // cast["balls"].Add(ball);
+            // The Enemies
+            cast["enemies"] = new List<Actor>();
 
-            // The paddle
-            cast["paddle"] = new List<Actor>();
+            Enemy zombie = new Enemy();
+            cast["enemies"].Add(zombie);
 
-            // Paddle paddle = new Paddle();
-            // cast["paddle"].Add(paddle);
+
+            cast["hud"] = new List<Actor>();
+
+            HUD hud = new HUD();
+            cast["hud"].Add(hud);
 
 
             /////////////////////////////////////////////////////////////////////////////////
@@ -74,6 +81,9 @@ namespace cse210_final_metroidvania
 
             GravityAction gravityAction = new GravityAction(physicsService);
             script["update"].Add(gravityAction);
+
+            FrictionAction frictionAction = new FrictionAction(physicsService);
+            script["update"].Add(frictionAction);
 
             // Start up the game
             outputService.OpenWindow(Constants.MAX_X, Constants.MAX_Y, "Metroidvania", Constants.FRAME_RATE);
