@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using cse210_final_metroidvania.Casting;
 using cse210_final_metroidvania.Services;
 
@@ -24,29 +25,52 @@ namespace cse210_final_metroidvania.Scripting
             Point direction = _inputService.GetDirection();
             List<Actor> heros = cast["heros"];
             
-            
+            // HERO CONTROLS
             foreach (Hero hero in heros)
             {
-                Point velocity = hero.GetVelocity();
+                if (hero.GetStunTime() == 0)
+                {
+                    hero.SetHitState(false);
+                    Point velocity = hero.GetVelocity();
 
-                if (direction.GetX() == 1)
-                {
-                    hero.SetVelocity(new Point(Constants.HERO_SPEED, velocity.GetY()));
-                }
-                else if (direction.GetX() == -1)
-                {
-                    hero.SetVelocity(new Point(-Constants.HERO_SPEED, velocity.GetY()));
+                    if (hero.GetVelocity().GetX() > 0 && direction.GetX() == -1)
+                    {
+                        Console.WriteLine("Left Arrow");
+                        hero.SetVelocity(new Point(0, velocity.GetY()));
+                    }
+                    else if (hero.GetVelocity().GetX() < 0 && direction.GetX() == 1)
+                    {
+                        Console.WriteLine("Right Arrow");
+                        hero.SetVelocity(new Point(0, velocity.GetY()));
+                    }
+                    else if (direction.GetX() == 1)
+                    {
+                        Console.WriteLine("Right Arrow");
+                        hero.SetVelocity(new Point(Constants.HERO_SPEED, velocity.GetY()));
+                    }
+                    else if (direction.GetX() == -1)
+                    {
+                        Console.WriteLine("Left Arrow");
+                        hero.SetVelocity(new Point(-Constants.HERO_SPEED, velocity.GetY()));
+                    }
+                    else
+                    {
+                        // Do something with friction here
+                        // hero.SetVelocity(new Point(0, velocity.GetY()));
+                    }
+
+                    if (direction.GetY() == 1 && hero.CanJump())
+                    {
+                        hero.SetCanJump(false);
+                        //  why does onground exist
+                        hero.SetOnGround(false);
+                        hero.SetGravity(true);
+                        _physicsService.ChangeAcceleration(hero, Constants.HERO_JUMP_ACCELERATION, "y");
+                    }
                 }
                 else
                 {
-                    // Do something with friction here
-                    hero.SetVelocity(new Point(0, velocity.GetY()));
-                }
-
-                if (direction.GetY() == 1 && hero.CanJump())
-                {
-                    hero.SetCanJump(false);
-                    _physicsService.ChangeAcceleration(hero, Constants.HERO_JUMP_ACCELERATION, "y");
+                    hero.CountDownStun();
                 }
             }
         }
