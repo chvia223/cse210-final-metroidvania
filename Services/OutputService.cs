@@ -102,7 +102,7 @@ namespace cse210_final_metroidvania.Services
 
             if (darkText)
             {
-                color = Raylib_cs.Color.BLACK;
+                color = Raylib_cs.Color.RED;
             }
 
             Raylib.DrawText(text,
@@ -118,8 +118,8 @@ namespace cse210_final_metroidvania.Services
         /// <param name="actor"></param>
         public void DrawActor(Actor actor)
         {
-            int x = actor.GetX();
-            int y = actor.GetY();
+            int x = (int)Math.Ceiling(actor.GetX());
+            int y = (int)Math.Ceiling(actor.GetY());
             int width = actor.GetWidth();
             int height = actor.GetHeight();
 
@@ -131,7 +131,7 @@ namespace cse210_final_metroidvania.Services
             }
             else if (actor.HasText())
             {
-                bool darkText = true;
+                bool darkText = false;
                 string text = actor.GetText();
                 DrawText(x, y, text, darkText);
             }

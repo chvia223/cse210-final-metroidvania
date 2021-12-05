@@ -9,23 +9,33 @@ namespace cse210_final_metroidvania.Casting
     /// </summary>
     public class Point
     {
-        private int _x;
-        private int _y;
+        private double _x;
+        private double _y;
 
-        public Point(int x, int y)
+        public Point(double x, double y)
         {
             _x = x;
             _y = y;
         }
 
-        public int GetX()
+        public double GetX()
         {
             return _x;
         }
 
-        public int GetY()
+        public double GetY()
         {
             return _y;
+        }
+
+        public void SetX(int x)
+        {
+            _x = x;
+        }
+
+        public void SetY(int y)
+        {
+            _y = y;
         }
 
         /// <summary>
@@ -35,8 +45,8 @@ namespace cse210_final_metroidvania.Casting
         /// <returns></returns>
         public Point Add(Point other)
         {
-            int newX = _x + other._x;
-            int newY = _y + other._y;
+            double newX = _x + other._x;
+            double newY = _y + other._y;
 
             return new Point(newX, newY);
         }
@@ -59,8 +69,8 @@ namespace cse210_final_metroidvania.Casting
         /// <returns></returns>
         public Point Scale(int factor)
         {
-            int newX = _x * factor;
-            int newY = _y * factor;
+            double newX = _x * factor;
+            double newY = _y * factor;
 
             return new Point(newX, newY);
         }

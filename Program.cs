@@ -13,20 +13,44 @@ namespace cse210_final_metroidvania
             // The Cast
             Dictionary<string, List<Actor>> cast = new Dictionary<string, List<Actor>>();
 
-            // The Bricks
-            cast["bricks"] = new List<Actor>();
+            // The Floor
+            cast["floor"] = new List<Actor>();
 
-            // The Ball
-            cast["balls"] = new List<Actor>();
+            int y = 500;
+            for (int x = 0; x < 850; x+=50)
+            {
+                Floor floor = new Floor();
+                floor.SetPosition(new Point(x, y));
+                cast["floor"].Add(floor);
+            }
+            
+            // For Collision debug
+            Floor barrier = new Floor();
+            barrier.SetPosition(new Point(350, 450));
+            cast["floor"].Add(barrier);
 
-            // Ball ball = new Ball();
-            // cast["balls"].Add(ball);
+            Floor barrier2 = new Floor();
+            barrier2.SetPosition(new Point(750, 450));
+            cast["floor"].Add(barrier2);
+            //
 
-            // The paddle
-            cast["paddle"] = new List<Actor>();
+            // The Heros
+            cast["heros"] = new List<Actor>();
 
-            // Paddle paddle = new Paddle();
-            // cast["paddle"].Add(paddle);
+            Hero hero = new Hero();
+            cast["heros"].Add(hero);
+
+            // The Enemies
+            cast["enemies"] = new List<Actor>();
+
+            Enemy zombie = new Enemy();
+            cast["enemies"].Add(zombie);
+
+
+            cast["hud"] = new List<Actor>();
+
+            HUD hud = new HUD();
+            cast["hud"].Add(hud);
 
 
             /////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +70,7 @@ namespace cse210_final_metroidvania
             DrawActorsAction drawActorsAction = new DrawActorsAction(outputService);
             script["output"].Add(drawActorsAction);
 
-            ControlActorsAction controlActorsAction = new ControlActorsAction(inputService);
+            ControlActorsAction controlActorsAction = new ControlActorsAction(inputService, physicsService);
             script["input"].Add(controlActorsAction);
 
             MoveActorsAction moveActorsAction = new MoveActorsAction();
@@ -55,10 +79,18 @@ namespace cse210_final_metroidvania
             HandleCollisionsAction handleCollisionsAction = new HandleCollisionsAction(physicsService, audioService);
             script["update"].Add(handleCollisionsAction);
 
+            GravityAction gravityAction = new GravityAction(physicsService);
+            script["update"].Add(gravityAction);
+
+            FrictionAction frictionAction = new FrictionAction(physicsService);
+            script["update"].Add(frictionAction);
+
             // Start up the game
-            outputService.OpenWindow(Constants.MAX_X, Constants.MAX_Y, "Batter", Constants.FRAME_RATE);
+            outputService.OpenWindow(Constants.MAX_X, Constants.MAX_Y, "Metroidvania", Constants.FRAME_RATE);
             audioService.StartAudio();
             audioService.PlaySound(Constants.SOUND_START);
+
+            // Raylib.BeginMode2D(Camera2D camera); 
 
             Director theDirector = new Director(cast, script);
             theDirector.Direct();
