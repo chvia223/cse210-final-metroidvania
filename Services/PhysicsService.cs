@@ -44,22 +44,6 @@ namespace cse210_final_metroidvania.Services
             return Raylib.CheckCollisionRecs(rectangle1, rectangle2);
         }
 
-        // public bool IsHorizontalWallCollision(Actor actor)
-        // {
-        //     return (actor.GetRightEdge() >= Constants.MAX_X || actor.GetLeftEdge() <= 0);
-        // }
-
-        // public bool IsTopWallCollision(Actor actor)
-        // {
-        //     return actor.GetTopEdge() <= 0;
-        // }
-
-        // public bool IsBottomWallCollision(Actor actor)
-        // {
-        //     return actor.GetBottomEdge() >= Constants.MAX_Y;
-        // }
-
-
         /// <summary>
         /// Collision with the top of the second actor.
         /// </summary>
@@ -153,6 +137,36 @@ namespace cse210_final_metroidvania.Services
             }
 
             return new Point(depthX, depthY);
+        }
+
+        public void HandleFriction(Actor first, double frictionConstant)
+        {
+            if (first.GetVelocity().GetX() > 0)
+            {
+                if (first.GetVelocity().GetX() - frictionConstant < 0)
+                {
+                    first.SetVelocity(new Point(0, first.GetVelocity().GetY()));
+                }
+                else
+                {
+                    ChangeAcceleration(first, -frictionConstant, "x");
+                }
+            }
+            else if (first.GetVelocity().GetX() < 0)
+            {
+                if (first.GetVelocity().GetX() + frictionConstant > 0)
+                {
+                    first.SetVelocity(new Point(0, first.GetVelocity().GetY()));
+                }
+                else
+                {
+                    ChangeAcceleration(first, frictionConstant, "x");
+                }
+            }
+            else
+            {
+                first.SetVelocity(new Point(0, first.GetVelocity().GetY()));
+            }
         }
     }
 

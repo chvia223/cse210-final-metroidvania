@@ -11,6 +11,7 @@ namespace cse210_final_metroidvania.Casting
         protected Point _velocity;
         protected bool _hasGravity;
         protected bool _canJump;
+        protected bool _onGround;
 
         protected int _width = 0;
         protected int _height = 0;
@@ -69,6 +70,15 @@ namespace cse210_final_metroidvania.Casting
         public bool CanJump()
         {
             return _canJump;
+        }
+        public void SetOnGround(bool onGround)
+        {
+            _onGround = onGround;
+        }
+
+        public bool IsOnGround()
+        {
+            return _onGround;
         }
 
         public string GetText()
