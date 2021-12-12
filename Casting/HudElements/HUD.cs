@@ -10,6 +10,11 @@ namespace cse210_final_metroidvania.Casting.HudElements
     /// </summary>
     public abstract class HUD : Actor
     {
+        public HUD()
+        {
+            SetCanCollide(false);
+        }
+
         public abstract void Update(Hero hero);
     }
 
