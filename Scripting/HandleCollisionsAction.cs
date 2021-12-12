@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using cse210_final_metroidvania.Casting;
+using cse210_final_metroidvania.Casting.Enemies;
+using cse210_final_metroidvania.Casting.HudElements;
+using cse210_final_metroidvania.Casting.EnvironmentElements;
 using cse210_final_metroidvania.Services;
 using System;
 
@@ -19,25 +22,25 @@ namespace cse210_final_metroidvania
             _audioService = audioService;
         }
 
-        public override void Execute(Dictionary<string, List<Actor>> cast)
+        public override string Execute(Dictionary<string, List<Actor>> cast)
         {
             List<Actor> heros = cast["heros"];
-            List<Actor> floor = cast["floor"];
+            List<Actor> envElements = cast["envElements"];
             List<Actor> enemies = cast["enemies"];
-            List<Actor> huds = cast["hud"];
+            List<Actor> hud = cast["hud"];
             
             // HUD hud = new HUD();
             // hud = (HUD)hudActor;
 
             // This foreach loop is rediculous. I need the hud to act like a HUD not an Actor
-            foreach (HUD hud in huds)
+            foreach (HUD hud_element in hud)
             {
                 foreach (Hero hero in heros)
                 {
                     // loop through hero/floor collisions
-                    foreach (Floor floor_piece in floor)
+                    foreach (EnvElement floor in envElements)
                     {
-                        HandleStaticEnvironmentCollision(hero, floor_piece);
+                        HandleStaticEnvironmentCollision(hero, floor);
                     }
                     // loop through hero/enemy collisions
                     foreach (Enemy enemy in enemies)
@@ -45,18 +48,20 @@ namespace cse210_final_metroidvania
                         HandleDynamicEnemyCollision(hero, enemy);
 
                         // loop through enemy/floor collisions
-                        foreach (Actor floor_piece in floor)
+                        foreach (EnvElement floor_piece in envElements)
                         {
                             HandleStaticEnvironmentCollision(enemy, floor_piece);
                         }
                     }
 
-                    hud.UpdateHealth(hero);
+                    hud_element.Update(hero);
 
                 }
             }
 
             ActorsCleanUp(cast);
+
+            return _newRoom;
         }
 
         /// <summary>
@@ -65,7 +70,7 @@ namespace cse210_final_metroidvania
         /// The results of all comparisons will be relative to the second actor
         /// passed in.
         /// </summary>
-        private void HandleStaticEnvironmentCollision(Actor first, Actor second)
+        private void HandleStaticEnvironmentCollision(Actor first, EnvElement second)
         {
             if (_physicsService.IsCollision(first, second))
             {
@@ -78,27 +83,39 @@ namespace cse210_final_metroidvania
                         if (overlap.GetX() > 0)
                         {
                             // Collision left of second actor
-                            Console.WriteLine("left side collision");
                             _physicsService.HandleLeftCollision(first, second);
 
-                            // make this it's own function call
-                            if (first.GetType() == typeof(Enemy))
+                            if (first.CanBounceOffEnv())
                             {
-                                // Change this to internal function of Enemy
                                 first.SetVelocity(new Point(-Constants.ENEMY_SPEED, first.GetVelocity().GetY()));
+                            }
+
+                            // If the player hits the door it'll take them to a new room
+                            if (second.GetType() == typeof(Door))
+                            {
+                                Point newPosition = ((Door)second).GetNewHeroPosition();
+                                _newRoom = ((Door)second).GetNewRoomName();
+                                first.SetPosition(newPosition);
                             }
                         }
                         else
                         {
                             // Collision right of second actor
-                            Console.WriteLine("right side collision");
                             _physicsService.HandleRightCollision(first, second);
 
-                            // make this it's own function call
-                            if (first.GetType() == typeof(Enemy))
+                            if (first.CanBounceOffEnv())
                             {
-                                // Change this to internal functino of Enemy
                                 first.SetVelocity(new Point(Constants.ENEMY_SPEED, first.GetVelocity().GetY()));
+                            }
+
+
+                            // If the player hits the door it'll take them to a new room
+                            if (second.GetType() == typeof(Door))
+                            {
+                                Point newPosition = ((Door)second).GetNewHeroPosition();
+                                _newRoom = ((Door)second).GetNewRoomName();
+                                first.SetPosition(newPosition);
+
                             }
                         }
                     }
@@ -107,25 +124,18 @@ namespace cse210_final_metroidvania
                         if (overlap.GetY() > 0)
                         {
                             // Collision top of second actor
-                            // Console.WriteLine("top side collision");
                             _physicsService.HandleTopCollision(first, second);
-                            if (second.GetType() == typeof(Floor))
-                            {
-                                Floor floor = (Floor)second;
-                                _physicsService.HandleFriction(first, floor.GetFrictionConstant());
-                            }
+                            _physicsService.HandleFriction(first, second.GetFrictionConstant());
                             if (first.GetType() == typeof(Hero))
                             {
                                 first.SetCanJump(true);
-                                // find a way to get working
-                                // (Hero)first.SetHitState(false);
+                                ((Hero)first).SetHitState(false);
                             }
                             first.SetOnGround(true);
                         }
                         else
                         {
                             // Collision bottom of second actor
-                            Console.WriteLine("bottom side collision");
                             _physicsService.HandleBottomCollision(first, second);
                         }
                     }
@@ -139,11 +149,11 @@ namespace cse210_final_metroidvania
         /// The results of all comparisons will be relative to the second actor
         /// passed in.
         /// </summary>
-        private void HandleDynamicEnemyCollision(Actor first, Enemy second)
+        private void HandleDynamicEnemyCollision(Actor first, Enemy enemy)
         {
-            if (_physicsService.IsCollision(first, second))
+            if (_physicsService.IsCollision(first, enemy))
             {
-                Point overlap = _physicsService.GetCollisionOverlap(first, second);
+                Point overlap = _physicsService.GetCollisionOverlap(first, enemy);
 
                 if (overlap.GetX() != 0 && overlap.GetY() != 0)
                 {
@@ -155,11 +165,11 @@ namespace cse210_final_metroidvania
                             // Make the hero jump back unless the actor coming into
                             // contact is a sword. Then the enemy will jump back.
                             Console.WriteLine("left side collision");
-                            _physicsService.HandleLeftCollision(first, second);
+                            _physicsService.HandleLeftCollision(first, enemy);
 
                             if (first.GetType() == typeof(Hero))
                             {
-                                second.BasicLeftAttack((Hero)first, _physicsService);
+                                enemy.LeftAttack((Hero)first, _physicsService);
                             }
                         }
                         else
@@ -168,11 +178,11 @@ namespace cse210_final_metroidvania
                             // Make the hero jump back unless the actor coming into
                             // contact is a sword. Then the enemy will jump back.
                             Console.WriteLine("right side collision");
-                            _physicsService.HandleRightCollision(first, second);
+                            _physicsService.HandleRightCollision(first, enemy);
 
                             if (first.GetType() == typeof(Hero))
                             {
-                                second.BasicRightAttack((Hero)first, _physicsService);
+                                enemy.RightAttack((Hero)first, _physicsService);
                             }
                         }
                     }
@@ -182,11 +192,9 @@ namespace cse210_final_metroidvania
                         {
                             // Collision top of second actor
                             Console.WriteLine("top side collision");
-                            _physicsService.HandleTopCollision(first, second);
-                            if (second.GetType() == typeof(Enemy))
-                            {
-                                _enemiesToRemove.Add(second);
-                            }
+                            _physicsService.HandleTopCollision(first, enemy);
+                            _enemiesToRemove.Add(enemy);
+
                             if (first.GetType() == typeof(Hero))
                             {
                                 first.SetCanJump(true);
@@ -197,7 +205,7 @@ namespace cse210_final_metroidvania
                             // Collision bottom of second actor
                             // Make hero take damage and be pushed in some direction.
                             Console.WriteLine("bottom side collision");
-                            _physicsService.HandleBottomCollision(first, second);
+                            _physicsService.HandleBottomCollision(first, enemy);
                         }
                     }
                 }
