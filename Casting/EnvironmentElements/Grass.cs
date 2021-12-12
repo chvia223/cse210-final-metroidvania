@@ -6,14 +6,14 @@ namespace cse210_final_metroidvania.Casting.EnvironmentElements
     /// <summary>
     /// Base class for all actors in the game.
     /// </summary>
-    public class Brick : EnvElement
+    public class Grass : EnvElement
     {
 
-        public Brick()
+        public Grass()
         {
             SetHeight(Constants.ENV_ELEMENT_HEIGHT);
             SetWidth(Constants.ENV_ELEMENT_WIDTH);
-            SetImage(Constants.IMAGE_BRICK);
+            // SetImage(Constants.IMAGE_GRASS);
             SetFrictionConstant(0.5);
             SetGravity(false);
         }
