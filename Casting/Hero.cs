@@ -10,6 +10,8 @@ namespace cse210_final_metroidvania.Casting
         private bool _isHit = false;
         private int _health;
         private int _stunTime = 0;
+        private string _equippedWeapon;
+        private double _acceleration;
 
         public Hero()
         {
@@ -19,7 +21,10 @@ namespace cse210_final_metroidvania.Casting
             SetHealth(100);
             SetPosition(new Point(100, 100));
             SetVelocity(new Point(0, 0));
+            SetAcceleration(1.0);
             SetGravity(true);
+            SetCanBounceOffEnv(false);
+            SetEquippedWeapon("Nothing");
         }
 
         public int GetHealth()
@@ -65,6 +70,26 @@ namespace cse210_final_metroidvania.Casting
         public void SetStunTime(int stunTime)
         {
             _stunTime = stunTime;
+        }
+
+        public string GetEquippedWeapon()
+        {
+            return _equippedWeapon;
+        }
+
+        public void SetEquippedWeapon(string equippedWeapon)
+        {
+            _equippedWeapon = equippedWeapon;
+        }
+
+        public double GetAcceleration()
+        {
+            return _acceleration;
+        }
+
+        public void SetAcceleration(double acceleration)
+        {
+            _acceleration = acceleration;
         }
     }
 
