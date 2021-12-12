@@ -12,6 +12,7 @@ namespace cse210_final_metroidvania.Casting
         protected bool _hasGravity;
         protected bool _canJump;
         protected bool _onGround;
+        protected bool _canBounceOffEnv;
 
         protected int _width = 0;
         protected int _height = 0;
@@ -79,6 +80,16 @@ namespace cse210_final_metroidvania.Casting
         public bool IsOnGround()
         {
             return _onGround;
+        }
+
+        public void SetCanBounceOffEnv(bool canBounceOffEnv)
+        {
+            _canBounceOffEnv = canBounceOffEnv;
+        }
+
+        public bool CanBounceOffEnv()
+        {
+            return _canBounceOffEnv;
         }
 
         public string GetText()
