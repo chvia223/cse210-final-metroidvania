@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Raylib_cs;
+using static Raylib_cs.Color;
 using cse210_final_metroidvania.Casting;
 
 namespace cse210_final_metroidvania.Services
@@ -66,9 +67,9 @@ namespace cse210_final_metroidvania.Services
         /// <param name="y"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public void DrawBox(int x, int y, int width, int height)
+        public void DrawBox(int x, int y, int width, int height, Color color)
         {
-            Raylib.DrawRectangle(x, y, width, height, Raylib_cs.Color.BLUE);            
+            Raylib.DrawRectangle(x, y, width, height, color);            
         }
 
         /// <summary>
@@ -102,7 +103,7 @@ namespace cse210_final_metroidvania.Services
 
             if (darkText)
             {
-                color = Raylib_cs.Color.BLACK;
+                color = Raylib_cs.Color.RED;
             }
 
             Raylib.DrawText(text,
@@ -118,10 +119,11 @@ namespace cse210_final_metroidvania.Services
         /// <param name="actor"></param>
         public void DrawActor(Actor actor)
         {
-            int x = actor.GetX();
-            int y = actor.GetY();
+            int x = (int)Math.Ceiling(actor.GetX());
+            int y = (int)Math.Ceiling(actor.GetY());
             int width = actor.GetWidth();
             int height = actor.GetHeight();
+            Color color = actor.GetColor();
 
 
             if (actor.HasImage())
@@ -131,13 +133,13 @@ namespace cse210_final_metroidvania.Services
             }
             else if (actor.HasText())
             {
-                bool darkText = true;
+                bool darkText = false;
                 string text = actor.GetText();
                 DrawText(x, y, text, darkText);
             }
             else
             {
-                DrawBox(x, y, width, height);
+                DrawBox(x, y, width, height, color);
             }
         }
 

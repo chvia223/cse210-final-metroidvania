@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using cse210_final_metroidvania.Casting;
+using cse210_final_metroidvania.Casting.Enemies;
+using cse210_final_metroidvania.Casting.HudElements;
+using cse210_final_metroidvania.Casting.EnvironmentElements;
 using cse210_final_metroidvania.Services;
+using System;
 
 
 namespace cse210_final_metroidvania
@@ -9,8 +13,8 @@ namespace cse210_final_metroidvania
     {
         private AudioService _audioService = new AudioService();
         private PhysicsService _physicsService = new PhysicsService();
-        private List<Actor> _bricksToRemove = new List<Actor>();
-        private List<Actor> _ballsToRemove = new List<Actor>();
+        private List<Actor> _environmentElementsToRemove = new List<Actor>();
+        private List<Actor> _enemiesToRemove = new List<Actor>();
         
         public HandleCollisionsAction(PhysicsService physicsService, AudioService audioService)
         {
@@ -18,93 +22,216 @@ namespace cse210_final_metroidvania
             _audioService = audioService;
         }
 
-        public override void Execute(Dictionary<string, List<Actor>> cast)
+        public override string Execute(Dictionary<string, List<Actor>> cast)
         {
-            List<Actor> balls = cast["balls"];
-            // Actor paddle = cast["paddle"][0];
-
-            List<Actor> bricks = cast["bricks"];
-
-
-        }    
-        //     foreach (Ball ball in balls)
-        //     {
-        //         foreach (Actor brick in bricks)
-        //         {
-        //             if (_physicsService.IsCollision(ball, brick))
-        //             {
-        //                 if (_physicsService.IsActorVerticalCollision(ball, brick))
-        //                 {
-        //                     ball.VerticalBounce();
-        //                     _bricksToRemove.Add(brick);
-        //                     _audioService.PlaySound(Constants.SOUND_BOUNCE);
-                            
-        //                     break;
-        //                 }
-        //                 if (_physicsService.IsHorizontalCollision(ball, brick))
-        //                 {    
-        //                     ball.HorizontalBounce();
-        //                     _bricksToRemove.Add(brick);
-        //                     _audioService.PlaySound(Constants.SOUND_BOUNCE);
-
-        //                     break;
-        //                 }
-  
-        //             }
-                    
-        //         }
-
+            List<Actor> heros = cast["heros"];
+            List<Actor> envElements = cast["envElements"];
+            List<Actor> enemies = cast["enemies"];
+            List<Actor> hud = cast["hud"];
             
-        //         if (_physicsService.IsHorizontalWallCollision(ball))
-        //         {    
-        //             ball.HorizontalBounce();
-        //             _audioService.PlaySound(Constants.SOUND_BOUNCE);
-        //         }
+            // HUD hud = new HUD();
+            // hud = (HUD)hudActor;
 
-        //         if (_physicsService.IsTopWallCollision(ball))
-        //         {
-        //             ball.VerticalBounce();
-        //             _audioService.PlaySound(Constants.SOUND_BOUNCE);
-        //         }
+            // This foreach loop is rediculous. I need the hud to act like a HUD not an Actor
+            foreach (HUD hud_element in hud)
+            {
+                foreach (Hero hero in heros)
+                {
+                    // loop through hero/floor collisions
+                    foreach (EnvElement envElement in envElements)
+                    {
+                        if (envElement.GetCanCollide())
+                        {
+                            HandleStaticEnvironmentCollision(hero, envElement);
+                        }
+                    }
+                    // loop through hero/enemy collisions
+                    foreach (Enemy enemy in enemies)
+                    {
+                        HandleDynamicEnemyCollision(hero, enemy);
 
-        //         if (_physicsService.IsBottomWallCollision(ball))
-        //         {
-        //             _ballsToRemove.Add(ball);
-        //         }
-                
-        //         if (_physicsService.IsCollision(ball, paddle))
-        //         {
-        //             if (_physicsService.IsActorVerticalCollision(ball, paddle))
-        //             {
-        //                 ball.VerticalBounce();
-        //                 _audioService.PlaySound(Constants.SOUND_BOUNCE);
-        //             }
-        //             else if (_physicsService.IsHorizontalCollision(ball, paddle))
-        //             {    
-        //                 ball.HorizontalBounce();
-        //                 _audioService.PlaySound(Constants.SOUND_BOUNCE);
-        //             }
-                    
-        //         }
-        //     }
+                        // loop through enemy/floor collisions
+                        foreach (EnvElement envElement in envElements)
+                        {
+                            if (envElement.GetCanCollide())
+                            {
+                                HandleStaticEnvironmentCollision(enemy, envElement);
+                            }
+                        }
+                    }
 
-        //     ActorsCleanUp(cast);
-        // }
+                    hud_element.Update(hero);
+
+                }
+            }
+
+            ActorsCleanUp(cast);
+
+            return _newRoom;
+        }
+
+        /// <summary>
+        /// This is inteded to handle the collision logic between an actor and
+        /// the static environmental elements found in the game.
+        /// The results of all comparisons will be relative to the second actor
+        /// passed in.
+        /// </summary>
+        private void HandleStaticEnvironmentCollision(Actor first, EnvElement second)
+        {
+            if (_physicsService.IsCollision(first, second))
+            {
+                Point overlap = _physicsService.GetCollisionOverlap(first, second);
+
+                if (overlap.GetX() != 0 && overlap.GetY() != 0)
+                {
+                    if (Math.Abs(overlap.GetX()) < Math.Abs(overlap.GetY()))
+                    {
+                        if (overlap.GetX() > 0)
+                        {
+                            // Collision left of second actor
+                            _physicsService.HandleLeftCollision(first, second);
+
+                            if (first.CanBounceOffEnv())
+                            {
+                                first.SetVelocity(new Point(-Constants.ENEMY_SPEED, first.GetVelocity().GetY()));
+                            }
+
+                            // If the player hits the door it'll take them to a new room
+                            if (first.GetType() == typeof(Hero) && second.GetType() == typeof(Door))
+                            {
+                                Point newPosition = ((Door)second).GetNewHeroPosition();
+                                _newRoom = ((Door)second).GetNewRoomName();
+                                first.SetPosition(newPosition);
+                            }
+                        }
+                        else
+                        {
+                            // Collision right of second actor
+                            _physicsService.HandleRightCollision(first, second);
+
+                            if (first.CanBounceOffEnv())
+                            {
+                                first.SetVelocity(new Point(Constants.ENEMY_SPEED, first.GetVelocity().GetY()));
+                            }
+
+
+                            // If the player hits the door it'll take them to a new room
+                            if (first.GetType() == typeof(Hero) && second.GetType() == typeof(Door))
+                            {
+                                Point newPosition = ((Door)second).GetNewHeroPosition();
+                                _newRoom = ((Door)second).GetNewRoomName();
+                                first.SetPosition(newPosition);
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (overlap.GetY() > 0)
+                        {
+                            // Collision top of second actor
+                            _physicsService.HandleTopCollision(first, second);
+                            _physicsService.HandleFriction(first, second.GetFrictionConstant());
+                            if (first.GetType() == typeof(Hero))
+                            {
+                                first.SetCanJump(true);
+                                ((Hero)first).SetHitState(false);
+                            }
+                            first.SetOnGround(true);
+                        }
+                        else
+                        {
+                            // Collision bottom of second actor
+                            _physicsService.HandleBottomCollision(first, second);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is inteded to handle the collision logic between the hero and
+        /// the enemies that will be found in this game.
+        /// The results of all comparisons will be relative to the second actor
+        /// passed in.
+        /// </summary>
+        private void HandleDynamicEnemyCollision(Actor first, Enemy enemy)
+        {
+            if (_physicsService.IsCollision(first, enemy))
+            {
+                Point overlap = _physicsService.GetCollisionOverlap(first, enemy);
+
+                if (overlap.GetX() != 0 && overlap.GetY() != 0)
+                {
+                    if (Math.Abs(overlap.GetX()) < Math.Abs(overlap.GetY()))
+                    {
+                        if (overlap.GetX() > 0)
+                        {
+                            // Collision left of second actor.
+                            // Make the hero jump back unless the actor coming into
+                            // contact is a sword. Then the enemy will jump back.
+                            Console.WriteLine("left side collision");
+                            _physicsService.HandleLeftCollision(first, enemy);
+
+                            if (first.GetType() == typeof(Hero))
+                            {
+                                enemy.LeftAttack((Hero)first, _physicsService);
+                            }
+                        }
+                        else
+                        {
+                            // Collision right of second actor
+                            // Make the hero jump back unless the actor coming into
+                            // contact is a sword. Then the enemy will jump back.
+                            Console.WriteLine("right side collision");
+                            _physicsService.HandleRightCollision(first, enemy);
+
+                            if (first.GetType() == typeof(Hero))
+                            {
+                                enemy.RightAttack((Hero)first, _physicsService);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (overlap.GetY() > 0)
+                        {
+                            // Collision top of second actor
+                            Console.WriteLine("top side collision");
+                            _physicsService.HandleTopCollision(first, enemy);
+                            _enemiesToRemove.Add(enemy);
+
+                            if (first.GetType() == typeof(Hero))
+                            {
+                                first.SetCanJump(true);
+                            }
+                        }
+                        else
+                        {
+                            // Collision bottom of second actor
+                            // Make hero take damage and be pushed in some direction.
+                            Console.WriteLine("bottom side collision");
+                            _physicsService.HandleBottomCollision(first, enemy);
+                        }
+                    }
+                }
+            }
+        }
 
         private void ActorsCleanUp(Dictionary<string, List<Actor>> cast)
         {
-            foreach (Actor brick in _bricksToRemove)
+            foreach (Actor element in _environmentElementsToRemove)
             {
-                cast["bricks"].Remove(brick);
+                cast["environmentElements"].Remove(element);
             }
 
-            foreach (Actor ball in _ballsToRemove)
+            foreach (Actor enemy in _enemiesToRemove)
             {
-                cast["balls"].Remove(ball);
+                cast["enemies"].Remove(enemy);
             }
 
-            _ballsToRemove.Clear();
-            _bricksToRemove.Clear();
+            _environmentElementsToRemove.Clear();
+            _enemiesToRemove.Clear();
         }
     }
 }

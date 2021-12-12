@@ -17,7 +17,7 @@ namespace cse210_final_metroidvania.Scripting
             _outputService = outputService;
         }
 
-        public override void Execute(Dictionary<string, List<Actor>> cast)
+        public override string Execute(Dictionary<string, List<Actor>> cast)
         {
             _outputService.StartDrawing();
 
@@ -27,6 +27,8 @@ namespace cse210_final_metroidvania.Scripting
             }
 
             _outputService.EndDrawing();
+
+            return _newRoom;
         }
 
     }

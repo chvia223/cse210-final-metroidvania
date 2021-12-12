@@ -1,6 +1,9 @@
 ﻿using System;
 using cse210_final_metroidvania.Services;
 using cse210_final_metroidvania.Casting;
+using cse210_final_metroidvania.Casting.Enemies;
+using cse210_final_metroidvania.Casting.HudElements;
+using cse210_final_metroidvania.Casting.EnvironmentElements;
 using cse210_final_metroidvania.Scripting;
 using System.Collections.Generic;
 
@@ -10,24 +13,10 @@ namespace cse210_final_metroidvania
     {
         static void Main(string[] args)
         {
-            // The Cast
-            Dictionary<string, List<Actor>> cast = new Dictionary<string, List<Actor>>();
-
-            // The Bricks
-            cast["bricks"] = new List<Actor>();
-
-            // The Ball
-            cast["balls"] = new List<Actor>();
-
-            // Ball ball = new Ball();
-            // cast["balls"].Add(ball);
-
-            // The paddle
-            cast["paddle"] = new List<Actor>();
-
-            // Paddle paddle = new Paddle();
-            // cast["paddle"].Add(paddle);
-
+            Dictionary<string, Dictionary<string, List<Actor>>> map = new Dictionary<string, Dictionary<string, List<Actor>>>();
+            
+            MapInitializer mapInitializer = new MapInitializer();
+            map = mapInitializer.GetGameMap();
 
             /////////////////////////////////////////////////////////////////////////////////
 
@@ -46,7 +35,7 @@ namespace cse210_final_metroidvania
             DrawActorsAction drawActorsAction = new DrawActorsAction(outputService);
             script["output"].Add(drawActorsAction);
 
-            ControlActorsAction controlActorsAction = new ControlActorsAction(inputService);
+            ControlActorsAction controlActorsAction = new ControlActorsAction(inputService, physicsService);
             script["input"].Add(controlActorsAction);
 
             MoveActorsAction moveActorsAction = new MoveActorsAction();
@@ -55,12 +44,17 @@ namespace cse210_final_metroidvania
             HandleCollisionsAction handleCollisionsAction = new HandleCollisionsAction(physicsService, audioService);
             script["update"].Add(handleCollisionsAction);
 
+            GravityAction gravityAction = new GravityAction(physicsService);
+            script["update"].Add(gravityAction);
+
             // Start up the game
-            outputService.OpenWindow(Constants.MAX_X, Constants.MAX_Y, "Batter", Constants.FRAME_RATE);
+            outputService.OpenWindow(Constants.MAX_X, Constants.MAX_Y, "Metroidvania", Constants.FRAME_RATE);
             audioService.StartAudio();
             audioService.PlaySound(Constants.SOUND_START);
 
-            Director theDirector = new Director(cast, script);
+            // Raylib.BeginMode2D(Camera2D camera); 
+
+            Director theDirector = new Director(map, script);
             theDirector.Direct();
 
             audioService.StopAudio();

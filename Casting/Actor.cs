@@ -1,4 +1,6 @@
 using System;
+using Raylib_cs;
+using static Raylib_cs.Color;
 
 namespace cse210_final_metroidvania.Casting
 {
@@ -9,12 +11,18 @@ namespace cse210_final_metroidvania.Casting
     {
         protected Point _position;
         protected Point _velocity;
+        protected bool _hasGravity;
+        protected bool _canJump;
+        protected bool _onGround;
+        protected bool _canBounceOffEnv;
+        protected bool _canCollide = true;
 
         protected int _width = 0;
         protected int _height = 0;
 
         protected string _text = "";
         private string _image = "";
+        protected Color _color = BLUE;
 
         public Actor()
         {
@@ -49,6 +57,65 @@ namespace cse210_final_metroidvania.Casting
             return _width > 0 && _height > 0;
         }
 
+        public void SetColor(Color color)
+        {
+            _color = color;
+        }
+
+        public Color GetColor()
+        {
+            return _color;
+        }
+
+        public void SetGravity(bool hasGravity)
+        {
+            _hasGravity = hasGravity;
+        }
+
+        public bool HasGravity()
+        {
+            return _hasGravity;
+        }
+
+        public void SetCanJump(bool canJump)
+        {
+            _canJump = canJump;
+        }
+
+        public bool CanJump()
+        {
+            return _canJump;
+        }
+        public void SetOnGround(bool onGround)
+        {
+            _onGround = onGround;
+        }
+
+        public bool IsOnGround()
+        {
+            return _onGround;
+        }
+
+        public void SetCanBounceOffEnv(bool canBounceOffEnv)
+        {
+            _canBounceOffEnv = canBounceOffEnv;
+        }
+
+        public bool CanBounceOffEnv()
+        {
+            return _canBounceOffEnv;
+        }
+
+        public void SetCanCollide(bool canCollide)
+        {
+            _canCollide = canCollide;
+        }
+
+        public bool GetCanCollide()
+        {
+            return _canCollide;
+        }
+
         public string GetText()
         {
             return _text;
@@ -59,32 +126,32 @@ namespace cse210_final_metroidvania.Casting
             _text = text;
         }
 
-        public int GetX()
+        public double GetX()
         {
             return _position.GetX();
         }
 
-        public int GetY()
+        public double GetY()
         {
             return _position.GetY();
         }
 
-        public int GetLeftEdge()
+        public double GetLeftEdge()
         {
             return _position.GetX();
         }
 
-        public int GetRightEdge()
+        public double GetRightEdge()
         {
             return _position.GetX() + _width;
         }
 
-        public int GetTopEdge()
+        public double GetTopEdge()
         {
             return _position.GetY();
         }
 
-        public int GetBottomEdge()
+        public double GetBottomEdge()
         {
             return _position.GetY() + _height;
         }
@@ -131,14 +198,14 @@ namespace cse210_final_metroidvania.Casting
 
         public void MoveNext()
         {
-            int x = _position.GetX();
-            int y = _position.GetY();
+            double x = _position.GetX();
+            double y = _position.GetY();
 
-            int dx = _velocity.GetX();
-            int dy = _velocity.GetY();
+            double dx = _velocity.GetX();
+            double dy = _velocity.GetY();
 
-            int newX = (x + dx) % Constants.MAX_X;
-            int newY = (y + dy) % Constants.MAX_Y;
+            double newX = (x + dx) % Constants.MAX_X;
+            double newY = (y + dy) % Constants.MAX_Y;
 
             if (newX < 0)
             {
