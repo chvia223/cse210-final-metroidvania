@@ -13,14 +13,14 @@ namespace cse210_final_metroidvania.Casting
 
         public Enemy()
         {
-            SetHeight(Constants.ENEMY_HEIGHT);
-            SetWidth(Constants.ENEMY_WIDTH);
-            // SetImage(Constants.IMAGE_HERO);
-            SetPosition(new Point(700, 500 - Constants.ENEMY_HEIGHT));
-            SetVelocity(new Point(Constants.ENEMY_SPEED, Constants.GRAVITY));
+            // SetHeight(Constants.ENEMY_HEIGHT);
+            // SetWidth(Constants.ENEMY_WIDTH);
+            // // SetImage(Constants.IMAGE_ENEMY);
+            // SetPosition(new Point(700, 500 - Constants.ENEMY_HEIGHT));
+            // SetVelocity(new Point(Constants.ENEMY_SPEED, Constants.GRAVITY));
         }
 
-        public void BasicRightAttack(Hero hero, PhysicsService physicsService)
+        public virtual void RightAttack(Hero hero, PhysicsService physicsService)
         {
             physicsService.ChangeAcceleration(hero, Constants.BASIC_ENEMY_HIT_KNOCKBACK, "x");
             physicsService.ChangeAcceleration(hero, -Constants.BASIC_ENEMY_HIT_KNOCKBACK, "y");
@@ -30,7 +30,7 @@ namespace cse210_final_metroidvania.Casting
             hero.LoseHealth(BASIC_ATTACK_DAMAGE);
         }
 
-        public void BasicLeftAttack(Hero hero, PhysicsService physicsService)
+        public virtual void LeftAttack(Hero hero, PhysicsService physicsService)
         {
             physicsService.ChangeAcceleration(hero, -Constants.BASIC_ENEMY_HIT_KNOCKBACK, "xy");
 
