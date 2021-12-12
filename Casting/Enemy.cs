@@ -13,11 +13,7 @@ namespace cse210_final_metroidvania.Casting
 
         public Enemy()
         {
-            // SetHeight(Constants.ENEMY_HEIGHT);
-            // SetWidth(Constants.ENEMY_WIDTH);
-            // // SetImage(Constants.IMAGE_ENEMY);
-            // SetPosition(new Point(700, 500 - Constants.ENEMY_HEIGHT));
-            // SetVelocity(new Point(Constants.ENEMY_SPEED, Constants.GRAVITY));
+            
         }
 
         public virtual void RightAttack(Hero hero, PhysicsService physicsService)

@@ -13,58 +13,6 @@ namespace cse210_final_metroidvania
     {
         static void Main(string[] args)
         {
-            // // The Cast
-            // Dictionary<string, List<Actor>> cast = new Dictionary<string, List<Actor>>();
-
-            // // The EnvElements
-            // cast["envElements"] = new List<Actor>();
-
-            // // int y = 500;
-            // // for (int x = 0; x < 850; x+=50)
-            // // {
-            // //     EnvElement floor = new EnvElement();
-            // //     floor.SetPosition(new Point(x, y));
-            // //     cast["envElements"].Add(floor);
-            // // }
-            // Brick floor = new Brick();
-            // floor.SetPosition(new Point(0, 500));
-            // floor.SetWidth(800);
-            // cast["envElements"].Add(floor);
-            
-            // // For Collision debug
-            // EnvElement barrier = new EnvElement();
-            // barrier.SetPosition(new Point(350, 450));
-            // cast["envElements"].Add(barrier);
-
-            // EnvElement barrier2 = new EnvElement();
-            // barrier2.SetPosition(new Point(750, 450));
-            // cast["envElements"].Add(barrier2);
-            // //
-
-            // // The Heros
-            // cast["heros"] = new List<Actor>();
-
-            // Hero hero = new Hero();
-            // cast["heros"].Add(hero);
-
-            // // The Enemies
-            // cast["enemies"] = new List<Actor>();
-
-            // BasicEnemy zombie = new BasicEnemy();
-            // cast["enemies"].Add(zombie);
-
-            // ///////////////////////////////////////////////////////
-            // // The HUD
-            // cast["hud"] = new List<Actor>();
-
-            // Health health = new Health();
-            // cast["hud"].Add(health);
-
-            // Velocity velocity = new Velocity();
-            // cast["hud"].Add(velocity);
-
-            // EquippedWeapon equippedWeapon = new EquippedWeapon();
-            // cast["hud"].Add(equippedWeapon);
             Dictionary<string, Dictionary<string, List<Actor>>> map = new Dictionary<string, Dictionary<string, List<Actor>>>();
             
             MapInitializer mapInitializer = new MapInitializer();

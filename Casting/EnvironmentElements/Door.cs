@@ -13,8 +13,9 @@ namespace cse210_final_metroidvania.Casting.EnvironmentElements
 
         public Door()
         {
-            SetHeight(Constants.ENV_ELEMENT_HEIGHT);
-            SetWidth(5);
+            SetHeight(100);
+            SetWidth(Constants.ENV_ELEMENT_WIDTH);
+            SetColor(Raylib_cs.Color.BROWN);
             // SetImage(Constants.IMAGE_FLOOR);
             SetGravity(false);
         }

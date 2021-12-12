@@ -6,14 +6,14 @@ namespace cse210_final_metroidvania.Casting.EnvironmentElements
     /// <summary>
     /// Base class for all actors in the game.
     /// </summary>
-    public class Brick : EnvElement
+    public class CastleWallSquare : EnvElement
     {
 
-        public Brick()
+        public CastleWallSquare()
         {
             SetHeight(Constants.ENV_ELEMENT_HEIGHT);
             SetWidth(Constants.ENV_ELEMENT_WIDTH);
-            SetImage(Constants.IMAGE_BRICK);
+            // SetImage(Constants.IMAGE_CASTLEWALLSQUARE);
             SetFrictionConstant(0.5);
             SetGravity(false);
         }
