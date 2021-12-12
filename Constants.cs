@@ -22,8 +22,8 @@ namespace cse210_final_metroidvania
         public const string SOUND_BOUNCE = "./Assets/boing.wav";
         public const string SOUND_OVER = "./Assets/over.wav";
 
-        public const int FLOOR_WIDTH = 50;
-        public const int FLOOR_HEIGHT = 50;
+        public const int ENV_ELEMENT_WIDTH = 25;
+        public const int ENV_ELEMENT_HEIGHT = 25;
 
         public const int HERO_WIDTH = 24;
         public const int HERO_HEIGHT = 24;
