@@ -1,6 +1,9 @@
 ﻿using System;
 using cse210_final_metroidvania.Services;
 using cse210_final_metroidvania.Casting;
+using cse210_final_metroidvania.Casting.Enemies;
+using cse210_final_metroidvania.Casting.HudElements;
+using cse210_final_metroidvania.Casting.EnvironmentElements;
 using cse210_final_metroidvania.Scripting;
 using System.Collections.Generic;
 
@@ -10,48 +13,62 @@ namespace cse210_final_metroidvania
     {
         static void Main(string[] args)
         {
-            // The Cast
-            Dictionary<string, List<Actor>> cast = new Dictionary<string, List<Actor>>();
+            // // The Cast
+            // Dictionary<string, List<Actor>> cast = new Dictionary<string, List<Actor>>();
 
-            // The Floor
-            cast["floor"] = new List<Actor>();
+            // // The EnvElements
+            // cast["envElements"] = new List<Actor>();
 
-            int y = 500;
-            for (int x = 0; x < 850; x+=50)
-            {
-                Floor floor = new Floor();
-                floor.SetPosition(new Point(x, y));
-                cast["floor"].Add(floor);
-            }
+            // // int y = 500;
+            // // for (int x = 0; x < 850; x+=50)
+            // // {
+            // //     EnvElement floor = new EnvElement();
+            // //     floor.SetPosition(new Point(x, y));
+            // //     cast["envElements"].Add(floor);
+            // // }
+            // Brick floor = new Brick();
+            // floor.SetPosition(new Point(0, 500));
+            // floor.SetWidth(800);
+            // cast["envElements"].Add(floor);
             
-            // For Collision debug
-            Floor barrier = new Floor();
-            barrier.SetPosition(new Point(350, 450));
-            cast["floor"].Add(barrier);
+            // // For Collision debug
+            // EnvElement barrier = new EnvElement();
+            // barrier.SetPosition(new Point(350, 450));
+            // cast["envElements"].Add(barrier);
 
-            Floor barrier2 = new Floor();
-            barrier2.SetPosition(new Point(750, 450));
-            cast["floor"].Add(barrier2);
-            //
+            // EnvElement barrier2 = new EnvElement();
+            // barrier2.SetPosition(new Point(750, 450));
+            // cast["envElements"].Add(barrier2);
+            // //
 
-            // The Heros
-            cast["heros"] = new List<Actor>();
+            // // The Heros
+            // cast["heros"] = new List<Actor>();
 
-            Hero hero = new Hero();
-            cast["heros"].Add(hero);
+            // Hero hero = new Hero();
+            // cast["heros"].Add(hero);
 
-            // The Enemies
-            cast["enemies"] = new List<Actor>();
+            // // The Enemies
+            // cast["enemies"] = new List<Actor>();
 
-            Enemy zombie = new Enemy();
-            cast["enemies"].Add(zombie);
+            // BasicEnemy zombie = new BasicEnemy();
+            // cast["enemies"].Add(zombie);
 
+            // ///////////////////////////////////////////////////////
+            // // The HUD
+            // cast["hud"] = new List<Actor>();
 
-            cast["hud"] = new List<Actor>();
+            // Health health = new Health();
+            // cast["hud"].Add(health);
 
-            HUD hud = new HUD();
-            cast["hud"].Add(hud);
+            // Velocity velocity = new Velocity();
+            // cast["hud"].Add(velocity);
 
+            // EquippedWeapon equippedWeapon = new EquippedWeapon();
+            // cast["hud"].Add(equippedWeapon);
+            Dictionary<string, Dictionary<string, List<Actor>>> map = new Dictionary<string, Dictionary<string, List<Actor>>>();
+            
+            MapInitializer mapInitializer = new MapInitializer();
+            map = mapInitializer.GetGameMap();
 
             /////////////////////////////////////////////////////////////////////////////////
 
@@ -82,9 +99,6 @@ namespace cse210_final_metroidvania
             GravityAction gravityAction = new GravityAction(physicsService);
             script["update"].Add(gravityAction);
 
-            FrictionAction frictionAction = new FrictionAction(physicsService);
-            script["update"].Add(frictionAction);
-
             // Start up the game
             outputService.OpenWindow(Constants.MAX_X, Constants.MAX_Y, "Metroidvania", Constants.FRAME_RATE);
             audioService.StartAudio();
@@ -92,7 +106,7 @@ namespace cse210_final_metroidvania
 
             // Raylib.BeginMode2D(Camera2D camera); 
 
-            Director theDirector = new Director(cast, script);
+            Director theDirector = new Director(map, script);
             theDirector.Direct();
 
             audioService.StopAudio();
