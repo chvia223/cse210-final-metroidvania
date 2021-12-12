@@ -38,9 +38,12 @@ namespace cse210_final_metroidvania
                 foreach (Hero hero in heros)
                 {
                     // loop through hero/floor collisions
-                    foreach (EnvElement floor in envElements)
+                    foreach (EnvElement envElement in envElements)
                     {
-                        HandleStaticEnvironmentCollision(hero, floor);
+                        if (envElement.GetCanCollide())
+                        {
+                            HandleStaticEnvironmentCollision(hero, envElement);
+                        }
                     }
                     // loop through hero/enemy collisions
                     foreach (Enemy enemy in enemies)
@@ -48,9 +51,12 @@ namespace cse210_final_metroidvania
                         HandleDynamicEnemyCollision(hero, enemy);
 
                         // loop through enemy/floor collisions
-                        foreach (EnvElement floor_piece in envElements)
+                        foreach (EnvElement envElement in envElements)
                         {
-                            HandleStaticEnvironmentCollision(enemy, floor_piece);
+                            if (envElement.GetCanCollide())
+                            {
+                                HandleStaticEnvironmentCollision(enemy, envElement);
+                            }
                         }
                     }
 
@@ -91,7 +97,7 @@ namespace cse210_final_metroidvania
                             }
 
                             // If the player hits the door it'll take them to a new room
-                            if (second.GetType() == typeof(Door))
+                            if (first.GetType() == typeof(Hero) && second.GetType() == typeof(Door))
                             {
                                 Point newPosition = ((Door)second).GetNewHeroPosition();
                                 _newRoom = ((Door)second).GetNewRoomName();
@@ -110,7 +116,7 @@ namespace cse210_final_metroidvania
 
 
                             // If the player hits the door it'll take them to a new room
-                            if (second.GetType() == typeof(Door))
+                            if (first.GetType() == typeof(Hero) && second.GetType() == typeof(Door))
                             {
                                 Point newPosition = ((Door)second).GetNewHeroPosition();
                                 _newRoom = ((Door)second).GetNewRoomName();
