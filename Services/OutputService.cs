@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Raylib_cs;
+using static Raylib_cs.Color;
 using cse210_final_metroidvania.Casting;
 
 namespace cse210_final_metroidvania.Services
@@ -66,9 +67,9 @@ namespace cse210_final_metroidvania.Services
         /// <param name="y"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public void DrawBox(int x, int y, int width, int height)
+        public void DrawBox(int x, int y, int width, int height, Color color)
         {
-            Raylib.DrawRectangle(x, y, width, height, Raylib_cs.Color.BLUE);            
+            Raylib.DrawRectangle(x, y, width, height, color);            
         }
 
         /// <summary>
@@ -122,6 +123,7 @@ namespace cse210_final_metroidvania.Services
             int y = (int)Math.Ceiling(actor.GetY());
             int width = actor.GetWidth();
             int height = actor.GetHeight();
+            Color color = actor.GetColor();
 
 
             if (actor.HasImage())
@@ -137,7 +139,7 @@ namespace cse210_final_metroidvania.Services
             }
             else
             {
-                DrawBox(x, y, width, height);
+                DrawBox(x, y, width, height, color);
             }
         }
 

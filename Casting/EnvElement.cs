@@ -5,18 +5,17 @@ namespace cse210_final_metroidvania.Casting
     /// <summary>
     /// Base class for all actors in the game.
     /// </summary>
-    public class Floor : Actor
+    public class EnvElement : Actor
     {
         private double _frictionConstant;
 
-        public Floor()
+        public EnvElement()
         {
-            SetHeight(Constants.FLOOR_HEIGHT);
-            SetWidth(Constants.FLOOR_WIDTH);
-            SetImage(Constants.IMAGE_FLOOR);
-            SetFrictionConstant(0.9);
+            SetHeight(Constants.ENV_ELEMENT_HEIGHT);
+            SetWidth(Constants.ENV_ELEMENT_WIDTH);
+            // SetImage(Constants.IMAGE_FLOOR);
+            SetFrictionConstant(0.5);
             SetGravity(false);
-
         }
 
         public void SetFrictionConstant(double frictionConstant)

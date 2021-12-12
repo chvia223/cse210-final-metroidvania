@@ -16,14 +16,19 @@ namespace cse210_final_metroidvania
     public class Director
     {
         private AudioService _audioService = new AudioService();
+        private CastPrepService _castPrepService = new CastPrepService();
         private bool _keepPlaying = true;
+        private Dictionary<string, Dictionary<string, List<Actor>>> _map;
         private Dictionary<string, List<Actor>> _cast;
         private Dictionary<string, List<Action>> _script;
 
-        public Director(Dictionary<string, List<Actor>> cast, Dictionary<string, List<Action>> script)
+        // public Director(Dictionary<string, List<Actor>> cast, Dictionary<string, List<Action>> script)
+        public Director(Dictionary<string, Dictionary<string, List<Actor>>> map, Dictionary<string, List<Action>> script)
         {
-            _cast = cast;
+            _map = map;
             _script = script;
+            _cast = _castPrepService.PopulateCast(map, "room0");
+            // ((Hero)map["room0"]["heros"][0]));
         }
 
         /// <summary>
@@ -58,7 +63,22 @@ namespace cse210_final_metroidvania
 
             foreach (Action action in actions)
             {
-                action.Execute(_cast);
+                string newRoom = action.Execute(_cast);
+                
+
+                if (newRoom != "")
+                {
+                    Console.WriteLine(newRoom);
+                    Actor hero = _cast["heros"][0];
+                    _cast["heros"].RemoveAt(0);
+
+                    _cast = _castPrepService.PopulateCast(_map, newRoom);
+
+                    // hero.SetPosition(new Point(100,100));
+
+                    _cast["heros"].Add(((Hero)hero));
+                }
+                
             }
         }
 

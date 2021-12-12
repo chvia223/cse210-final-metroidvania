@@ -15,7 +15,7 @@ namespace cse210_final_metroidvania.Scripting
         {
         }
 
-        public override void Execute(Dictionary<string, List<Actor>> cast)
+        public override string Execute(Dictionary<string, List<Actor>> cast)
         {
             foreach (List<Actor> group in cast.Values)
             {
@@ -24,6 +24,8 @@ namespace cse210_final_metroidvania.Scripting
                     MoveActor(actor);
                 }
             }
+
+            return _newRoom;
         }
         
         private void MoveActor(Actor actor)

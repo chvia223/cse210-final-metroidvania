@@ -13,10 +13,10 @@ namespace cse210_final_metroidvania
             _physicsService = physicsService;
         }
 
-        public override void Execute(Dictionary<string, List<Actor>> cast)
+        public override string Execute(Dictionary<string, List<Actor>> cast)
         {
             List<Actor> heros = cast["heros"];
-            List<Actor> floor = cast["floor"];
+            List<Actor> envElements = cast["envElements"];
 
 
             foreach (Actor hero in heros)
@@ -30,13 +30,15 @@ namespace cse210_final_metroidvania
                 }
             }
 
-            foreach (Actor floor_piece in floor)
+            foreach (Actor floor in envElements)
             {
-                if (floor_piece.HasGravity())
+                if (floor.HasGravity())
                 {
-                    _physicsService.ChangeAcceleration(floor_piece, Constants.GRAVITY, "y");
+                    _physicsService.ChangeAcceleration(floor, Constants.GRAVITY, "y");
                 }
             }
+
+            return _newRoom;
         }
     }
 }

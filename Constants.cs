@@ -15,19 +15,25 @@ namespace cse210_final_metroidvania
         public const int DEFAULT_FONT_SIZE = 20;
         public const int DEFAULT_TEXT_OFFSET = 4;
 
-        public const string IMAGE_FLOOR = "./Assets/floor_temp.png";
+        public const string IMAGE_BRICK = "./Assets/brickWall_sized.png";
+        public const string IMAGE_GRASS = "./Assets/grass_sized.png";
+        public const string IMAGE_CASTLEWALLROUND = "./Assets/castle_sized.png";
+        public const string IMAGE_CASTLEWALLSQUARE = "./Assets/castleCenter_sized.png";
+        public const string IMAGE_WOODEN_CRATE = "./Assets/box_sized.png";
         public const string IMAGE_HERO = "./Assets/hero_temp.png";
 
         public const string SOUND_START = "./Assets/start.wav";
         public const string SOUND_BOUNCE = "./Assets/boing.wav";
         public const string SOUND_OVER = "./Assets/over.wav";
 
-        public const int FLOOR_WIDTH = 50;
-        public const int FLOOR_HEIGHT = 50;
+        // Should be 25, but I goofed resizing the textures
+        public const int ENV_ELEMENT_WIDTH = 50;
+        public const int ENV_ELEMENT_HEIGHT = 50;
 
         public const int HERO_WIDTH = 24;
         public const int HERO_HEIGHT = 24;
-        public const double HERO_JUMP_ACCELERATION = -8.0;
+        // was -8.0
+        public const double HERO_JUMP_ACCELERATION = -11.0;
         public const double HERO_SPEED = 3.5;
 
         public const int ENEMY_WIDTH = 18;
