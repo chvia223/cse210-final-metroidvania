@@ -1,4 +1,6 @@
 using System;
+using Raylib_cs;
+using static Raylib_cs.Color;
 
 namespace cse210_final_metroidvania.Casting
 {
@@ -13,12 +15,14 @@ namespace cse210_final_metroidvania.Casting
         protected bool _canJump;
         protected bool _onGround;
         protected bool _canBounceOffEnv;
+        protected bool _canCollide = true;
 
         protected int _width = 0;
         protected int _height = 0;
 
         protected string _text = "";
         private string _image = "";
+        protected Color _color = BLUE;
 
         public Actor()
         {
@@ -51,6 +55,16 @@ namespace cse210_final_metroidvania.Casting
         public bool HasBox()
         {
             return _width > 0 && _height > 0;
+        }
+
+        public void SetColor(Color color)
+        {
+            _color = color;
+        }
+
+        public Color GetColor()
+        {
+            return _color;
         }
 
         public void SetGravity(bool hasGravity)
@@ -90,6 +104,16 @@ namespace cse210_final_metroidvania.Casting
         public bool CanBounceOffEnv()
         {
             return _canBounceOffEnv;
+        }
+
+        public void SetCanCollide(bool canCollide)
+        {
+            _canCollide = canCollide;
+        }
+
+        public bool GetCanCollide()
+        {
+            return _canCollide;
         }
 
         public string GetText()
