@@ -21,10 +21,19 @@ namespace cse210_final_metroidvania
         public const string IMAGE_CASTLEWALLSQUARE = "./Assets/castleCenter_sized.png";
         public const string IMAGE_WOODEN_CRATE = "./Assets/box_sized.png";
         public const string IMAGE_HERO = "./Assets/hero_temp.png";
+        public const string IMAGE_GAME_OVER = "./Assets/game_over.png";
 
-        public const string SOUND_START = "./Assets/start.wav";
-        public const string SOUND_BOUNCE = "./Assets/boing.wav";
-        public const string SOUND_OVER = "./Assets/over.wav";
+        public const string SOUND_START = "./Assets/Audio/start.wav";
+        public const string SOUND_OVER = "./Assets/Audio/over.wav";
+        public const string SOUND_JUMP = "./Assets/Audio/jump.wav";
+        public const string SOUND_LAND_ON_GRASS = "./Assets/Audio/land_on_grass.wav";
+        public const string SOUND_LAND_ON_STONE = "./Assets/Audio/land_on_stone.wav";
+        public const string SOUND_PICK_UP_HEALTH_PACK = "./Assets/Audio/picked_up_health.wav";
+        public const string SOUND_PICK_UP_ITEM = "./Assets/Audio/picked_up_gun.wav";
+
+        public const string SOUND_GOT_HIT_BY_ENEMY = "./Assets/Audio/hit_by_enemy_alt.wav";
+        public const string SOUND_HIT_ENEMY = "./Assets/Audio/hit_enemy.wav";
+
 
         // Should be 25, but I goofed resizing the textures
         public const int ENV_ELEMENT_WIDTH = 50;
