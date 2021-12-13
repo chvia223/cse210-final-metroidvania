@@ -499,20 +499,20 @@ namespace cse210_final_metroidvania
             ///////////////////////////////////////////
             castCastleUpperFloor["enemies"] = new List<Actor>();
 
-            BasicEnemy badGuy0 = new BasicEnemy();
-            badGuy0.SetPosition(new Point(500, 300));
-            badGuy0.SetVelocity(new Point(-Constants.ENEMY_SPEED, Constants.GRAVITY));
-            castCastleUpperFloor["enemies"].Add(badGuy0);
+            // BasicEnemy badGuy0 = new BasicEnemy();
+            // badGuy0.SetPosition(new Point(500, 300));
+            // badGuy0.SetVelocity(new Point(-Constants.ENEMY_SPEED, Constants.GRAVITY));
+            // castCastleUpperFloor["enemies"].Add(badGuy0);
 
-            BasicEnemy badGuy1 = new BasicEnemy();
-            badGuy1.SetPosition(new Point(530, 300));
-            badGuy1.SetVelocity(new Point(-Constants.ENEMY_SPEED, Constants.GRAVITY));
-            castCastleUpperFloor["enemies"].Add(badGuy1);
+            // BasicEnemy badGuy1 = new BasicEnemy();
+            // badGuy1.SetPosition(new Point(530, 300));
+            // badGuy1.SetVelocity(new Point(-Constants.ENEMY_SPEED, Constants.GRAVITY));
+            // castCastleUpperFloor["enemies"].Add(badGuy1);
 
-            BasicEnemy badGuy2 = new BasicEnemy();
-            badGuy2.SetPosition(new Point(460, 300));
-            badGuy2.SetVelocity(new Point(Constants.ENEMY_SPEED, Constants.GRAVITY));
-            castCastleUpperFloor["enemies"].Add(badGuy2);
+            // BasicEnemy badGuy2 = new BasicEnemy();
+            // badGuy2.SetPosition(new Point(460, 300));
+            // badGuy2.SetVelocity(new Point(Constants.ENEMY_SPEED, Constants.GRAVITY));
+            // castCastleUpperFloor["enemies"].Add(badGuy2);
 
             ///////////////////////////////////////////
             // HUD
