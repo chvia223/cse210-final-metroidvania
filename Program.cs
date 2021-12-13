@@ -35,7 +35,7 @@ namespace cse210_final_metroidvania
             DrawActorsAction drawActorsAction = new DrawActorsAction(outputService);
             script["output"].Add(drawActorsAction);
 
-            ControlActorsAction controlActorsAction = new ControlActorsAction(inputService, physicsService);
+            ControlActorsAction controlActorsAction = new ControlActorsAction(inputService, physicsService, audioService);
             script["input"].Add(controlActorsAction);
 
             MoveActorsAction moveActorsAction = new MoveActorsAction();

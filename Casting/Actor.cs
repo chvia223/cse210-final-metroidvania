@@ -13,6 +13,7 @@ namespace cse210_final_metroidvania.Casting
         protected Point _velocity;
         protected bool _hasGravity;
         protected bool _canJump;
+        protected bool _isMoving = false;
         protected bool _onGround;
         protected bool _canBounceOffEnv;
         protected bool _canCollide = true;
@@ -94,6 +95,16 @@ namespace cse210_final_metroidvania.Casting
         public bool IsOnGround()
         {
             return _onGround;
+        }
+
+        public void SetIsMoving(bool isMoving)
+        {
+            _isMoving = isMoving;
+        }
+
+        public bool GetIsMoving()
+        {
+            return _isMoving;
         }
 
         public void SetCanBounceOffEnv(bool canBounceOffEnv)
