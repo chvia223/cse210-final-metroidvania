@@ -15,6 +15,7 @@ namespace cse210_final_metroidvania
         private PhysicsService _physicsService = new PhysicsService();
         private List<Actor> _environmentElementsToRemove = new List<Actor>();
         private List<Actor> _enemiesToRemove = new List<Actor>();
+        private int _movementSoundInterval = 0;
         
         public HandleCollisionsAction(PhysicsService physicsService, AudioService audioService)
         {
@@ -61,6 +62,19 @@ namespace cse210_final_metroidvania
                     }
 
                     hud_element.Update(hero);
+
+                    if (hero.GetHealth() <= 0)
+                    {
+                        hero.SetCanMove(false);
+                        hero.SetGravity(false);
+                        hero.SetVelocity(new Point(0, 0));
+                        Point finalPosition = new Point(600 - Constants.HERO_WIDTH/2, 575);
+                        hero.SetPosition(finalPosition);
+
+                        _audioService.PlaySound(Constants.SOUND_OVER);
+
+                        _newRoom = "gameOver";
+                    }
 
                 }
             }
@@ -132,10 +146,31 @@ namespace cse210_final_metroidvania
                             // Collision top of second actor
                             _physicsService.HandleTopCollision(first, second);
                             _physicsService.HandleFriction(first, second.GetFrictionConstant());
+                            
+                            // This will make sure the sound is only played once when the Hero lands.
+                            if(!first.IsOnGround())
+                            {
+                                _audioService.PlaySound(second.GetInteractSound());
+                            }
+
+                            // Player must be going a certain speed to make noise on the ground
+                            if (Math.Abs(first.GetVelocity().GetX()) > Constants.HERO_SPEED - 1 && _movementSoundInterval == 0)
+                            {
+                                _audioService.PlaySound(second.GetInteractSound());
+                                _movementSoundInterval = 15;
+                            }
+                            if (_movementSoundInterval > 0)
+                            {
+                                _movementSoundInterval -= 1;
+                            }
+
                             if (first.GetType() == typeof(Hero))
                             {
                                 first.SetCanJump(true);
                                 ((Hero)first).SetHitState(false);
+                                
+                                // I only want the sound to play for the Hero
+                                // _audioService.PlaySound(second.GetInteractSound());
                             }
                             first.SetOnGround(true);
                         }
@@ -176,6 +211,7 @@ namespace cse210_final_metroidvania
                             if (first.GetType() == typeof(Hero))
                             {
                                 enemy.LeftAttack((Hero)first, _physicsService);
+                                _audioService.PlaySound(Constants.SOUND_GOT_HIT_BY_ENEMY);
                             }
                         }
                         else
@@ -189,6 +225,7 @@ namespace cse210_final_metroidvania
                             if (first.GetType() == typeof(Hero))
                             {
                                 enemy.RightAttack((Hero)first, _physicsService);
+                                _audioService.PlaySound(Constants.SOUND_GOT_HIT_BY_ENEMY);
                             }
                         }
                     }
@@ -204,6 +241,7 @@ namespace cse210_final_metroidvania
                             if (first.GetType() == typeof(Hero))
                             {
                                 first.SetCanJump(true);
+                                _audioService.PlaySound(Constants.SOUND_HIT_ENEMY);
                             }
                         }
                         else
@@ -212,6 +250,7 @@ namespace cse210_final_metroidvania
                             // Make hero take damage and be pushed in some direction.
                             Console.WriteLine("bottom side collision");
                             _physicsService.HandleBottomCollision(first, enemy);
+                            _audioService.PlaySound(Constants.SOUND_GOT_HIT_BY_ENEMY);
                         }
                     }
                 }
@@ -222,7 +261,7 @@ namespace cse210_final_metroidvania
         {
             foreach (Actor element in _environmentElementsToRemove)
             {
-                cast["environmentElements"].Remove(element);
+                cast["envElements"].Remove(element);
             }
 
             foreach (Actor enemy in _enemiesToRemove)
