@@ -18,6 +18,7 @@ namespace cse210_final_metroidvania
             // InitializeCast1();
             InitializeCastleOutside();
             InitializeCastleEntrance();
+            InitializeGameOver();
         }
 
         public Dictionary<string, Dictionary<string, List<Actor>>> GetGameMap()
@@ -378,6 +379,58 @@ namespace cse210_final_metroidvania
 
             ///////////////////////////////////////////
             _rooms["castleEntrance"] = castCastleEntrance;
+        }
+
+        private void InitializeGameOver()
+        {
+            Dictionary<string, List<Actor>> castGameOver = new Dictionary<string, List<Actor>>();
+        
+            ///////////////////////////////////////////
+            // Background
+            ///////////////////////////////////////////
+            castGameOver["background"] = new List<Actor>();
+
+            Actor gameOverText = new Actor();
+            gameOverText.SetPosition(new Point(280, 50));
+            gameOverText.SetWidth(640);
+            gameOverText.SetHeight(360);
+            gameOverText.SetCanCollide(false);
+            gameOverText.SetImage(Constants.IMAGE_GAME_OVER);
+            castGameOver["background"].Add(gameOverText);
+
+            ///////////////////////////////////////////
+            // Enviroment Elements
+            ///////////////////////////////////////////
+            castGameOver["envElements"] = new List<Actor>();
+
+            EnvElement heroGhost = new EnvElement();
+            heroGhost.SetPosition(new Point(600 - Constants.HERO_WIDTH/2, 575));
+            heroGhost.SetVelocity(new Point(0,-0.5));
+            heroGhost.SetWidth(Constants.HERO_WIDTH);
+            heroGhost.SetHeight(Constants.HERO_HEIGHT);
+            heroGhost.SetCanJump(false);
+            heroGhost.SetGravity(false);
+            heroGhost.SetCanCollide(false);
+            heroGhost.SetColor(new Raylib_cs.Color(102,255,255,50));
+            castGameOver["envElements"].Add(heroGhost);
+
+            ///////////////////////////////////////////
+            // Hero
+            ///////////////////////////////////////////
+            castGameOver["heros"] = new List<Actor>();            
+
+            ///////////////////////////////////////////
+            // Enemies
+            ///////////////////////////////////////////
+            castGameOver["enemies"] = new List<Actor>();
+
+            ///////////////////////////////////////////
+            // HUD
+            ///////////////////////////////////////////
+            castGameOver["hud"] = new List<Actor>();
+
+            ///////////////////////////////////////////
+            _rooms["gameOver"] = castGameOver;
         }
     }
 }
