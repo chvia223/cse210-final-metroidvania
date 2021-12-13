@@ -68,17 +68,38 @@ namespace cse210_final_metroidvania
 
                 if (newRoom != "")
                 {
-                    Console.WriteLine(newRoom);
                     Actor hero = _cast["heros"][0];
                     _cast["heros"].RemoveAt(0);
 
                     _cast = _castPrepService.PopulateCast(_map, newRoom);
 
-                    // hero.SetPosition(new Point(100,100));
-
                     _cast["heros"].Add(((Hero)hero));
                 }
                 
+
+                // This is specifically for the Game Over screen
+                if (newRoom == "gameOver")
+                {
+                    List<Actor> envElements = _cast["envElements"];
+                    List<Actor> actorsToRemove = new List<Actor>();
+
+                    if (envElements.Count > 0)
+                    {
+                        Actor heroGhost = envElements[0];
+
+                        // Will remove the Ghost once it reaches a certain height
+                        if (heroGhost.GetPosition().GetY() <= 350)
+                        {
+                            heroGhost.SetVelocity(new Point(0, 0));
+                            actorsToRemove.Add(heroGhost);
+                        }
+
+                        foreach (Actor actor in actorsToRemove)
+                        {
+                            envElements.Remove(actor);
+                        }
+                    }
+                }
             }
         }
 
