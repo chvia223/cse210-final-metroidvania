@@ -8,6 +8,7 @@ namespace cse210_final_metroidvania.Casting
     public class EnvElement : Actor
     {
         private double _frictionConstant;
+        private string _interactSound;
 
         public EnvElement()
         {
@@ -15,6 +16,7 @@ namespace cse210_final_metroidvania.Casting
             SetWidth(Constants.ENV_ELEMENT_WIDTH);
             // SetImage(Constants.IMAGE_FLOOR);
             SetFrictionConstant(0.5);
+            SetInteractSound(Constants.SOUND_LAND_ON_STONE);
             SetGravity(false);
         }
 
@@ -26,6 +28,16 @@ namespace cse210_final_metroidvania.Casting
         public double GetFrictionConstant()
         {
             return _frictionConstant;
+        }
+
+        public void SetInteractSound(string interactSound)
+        {
+            _interactSound = interactSound;
+        }
+
+        public string GetInteractSound()
+        {
+            return _interactSound;
         }
     }
 
