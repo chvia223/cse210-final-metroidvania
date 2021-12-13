@@ -44,9 +44,6 @@ namespace cse210_final_metroidvania
             HandleCollisionsAction handleCollisionsAction = new HandleCollisionsAction(physicsService, audioService);
             script["update"].Add(handleCollisionsAction);
 
-            GameOverAction gameOverAction = new GameOverAction();
-            script["update"].Add(gameOverAction);
-
             GravityAction gravityAction = new GravityAction(physicsService);
             script["update"].Add(gravityAction);
 

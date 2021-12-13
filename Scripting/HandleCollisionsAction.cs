@@ -63,8 +63,12 @@ namespace cse210_final_metroidvania
 
                     hud_element.Update(hero);
 
-                    if (hero.GetHealth() <= 0)
+                    if (hero.GetHealth() <= 0 || hero.GetPosition().GetY() > 1300)
                     {
+                        if (hero.GetPosition().GetY() > 1300)
+                        {
+                            _audioService.PlaySound(Constants.SOUND_HIT_ENEMY);
+                        }
                         hero.SetCanMove(false);
                         hero.SetGravity(false);
                         hero.SetVelocity(new Point(0, 0));
