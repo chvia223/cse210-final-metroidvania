@@ -15,6 +15,7 @@ namespace cse210_final_metroidvania.Casting.EnvironmentElements
             SetWidth(Constants.ENV_ELEMENT_WIDTH);
             SetImage(Constants.IMAGE_BRICK);
             SetFrictionConstant(0.5);
+            SetInteractSound(Constants.SOUND_LAND_ON_STONE);
             SetGravity(false);
         }
 
