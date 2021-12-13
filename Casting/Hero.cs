@@ -8,10 +8,12 @@ namespace cse210_final_metroidvania.Casting
     public class Hero : Actor
     {
         private bool _isHit = false;
+        private bool _canMove = true;
         private int _health;
         private int _stunTime = 0;
         private string _equippedWeapon;
         private double _acceleration;
+
 
         public Hero()
         {
@@ -25,6 +27,7 @@ namespace cse210_final_metroidvania.Casting
             SetGravity(true);
             SetCanBounceOffEnv(false);
             SetEquippedWeapon("Nothing");
+            SetCanMove(true);
         }
 
         public int GetHealth()
@@ -90,6 +93,16 @@ namespace cse210_final_metroidvania.Casting
         public void SetAcceleration(double acceleration)
         {
             _acceleration = acceleration;
+        }
+
+        public bool GetCanMove()
+        {
+            return _canMove;
+        }
+
+        public void SetCanMove(bool canMove)
+        {
+            _canMove = canMove;
         }
     }
 
