@@ -350,4 +350,4 @@ MigrationBackup/
 .ionide/
 
 # Visual Studio Code environment execution files
-.vscode
+.vscode/
